@@ -1,7 +1,7 @@
 === oik-nivo-slider ===
 Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
-Tags: shortcode, Nivo slider, [nivo], oik, jQuery
+Tags: shortcode, Nivo, slider, [nivo], oik, jQuery, slideshow
 Requires at least: 3.0.4
 Tested up to: 3.3.1
 Stable tag: trunk
@@ -48,6 +48,9 @@ It uses the jQuery library provided by WordPress
 post_type="attachment|post_type - Post type to display"
 theme="default|orman|pascal - Theme for the slideshow"
 class="|classes - CSS classes"]
+and other parameters as for [bw_posts] 
+
+Documentation to be completed! 
 
 = What's OIK and why does it need it? = 
 The oik Nivo slider is developed using the OIK (Often Included Key Information) API (Application Programming Interface).
@@ -56,7 +59,7 @@ which populate the slider and bw_thumbnail() to select the image to display when
 
 = I typed [nivo] and got [nivo] back =
 You need to activate both the oik-nivo-slider plugin and the oik base plugin.
-The [nivo] shortcode only becomes functional when [oik] is not loaded.
+The [nivo] shortcode only becomes functional when [oik] is loaded.
 
 = I can't see some of the images in my slideshow =
 The default image size is thumbnail=full.
@@ -70,8 +73,10 @@ OR exclude the post from the list ( exclude=id1,id2 )
 YES. There is no auto cropping?
 
 = Can I control the slideshow transitions? =
-This is planned for a future version
+This is planned for a future version.
 
+= Can I provide my own themeing? =
+This is planned for a future version.
 
 = Can I put the [nivo] shortcode in my sidebar? =
 YES. You can use the [nivo] shortcode in sidebars, headers and footers
