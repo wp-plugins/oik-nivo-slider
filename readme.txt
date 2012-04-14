@@ -4,7 +4,7 @@ Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags: shortcode, Nivo, slider, [nivo], oik, jQuery, slideshow
 Requires at least: 3.0.4
 Tested up to: 3.3.1
-Stable tag: trunk
+Stable tag: 1.0
 
 [nivo] shortcode for the jQuery "Nivo slider" for posts, pages, attachments and custom post types
 
