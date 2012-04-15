@@ -89,6 +89,12 @@
 }
 
 
-/* Fix to allow all images to be links to other pages - see    http://support.dev7studios.com/discussions/nivo-slider/42-cant-put-links-on-all-images */
-
-#slider a { display: block; }
+/* Fix to allow all images to be links to other pages - see    
+http://support.dev7studios.com/discussions/nivo-slider/42-cant-put-links-on-all-images 
+*/
+#slider-1 a, #slider-2 a, #slider-3 a, #slider-4 a, #slider-5 a { display: block; }
+ 
+/* Additional code to decorate the nivo-caption when it is hovered over. 
+This class is dynamically added/removed by the jQuery oikNCClick() function.
+*/
+.nivo-caption-hovered { text-decoration: underline; }
