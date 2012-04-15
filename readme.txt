@@ -37,46 +37,41 @@ Download oik from
 
 = What is the simplest syntax for the [nivo] shortcode? = 
 If you simply want to show all the attached images to a page, post or custom post type then use
-
-[nivo]
+`[nivo]`
 
 = I typed [nivo] and got [nivo] back =
-You need to activate both the oik-nivo-slider plugin and the oik base plugin.
-The [nivo] shortcode only becomes functional when [oik] is loaded.
+You need to activate both the oik-nivo-slider plugin and the oik base plugin. The [nivo] shortcode only becomes functional when [oik] is loaded.
 
 = What are the parameters to the [nivo] shortcode? =
 The basic parameters that control the display of the Nivo slider are:
 
-[nivo
+`[nivo
   theme="default|orman|pascal|oik - Theme for the slideshow"
   link="y|n - Link the images to the target post/page"
   caption="y|n - Display the image title as the caption"
   ribbon="y|n - Display the ribbon, if the theme supports it"
-  thumbnail="thumbnail|medium|large|full|nnn|wxh - image size"
+  thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
   class="|classes - CSS classes"
-]
+]`
 
 = How do I make the images link to my content? = 
-Use the post_type parameter to specify the content type
-and either the post_parent parameter for hierarchical content types
-or category for posts or other selection criteria for other content types
+Use the post_type parameter to specify the content type and either the post_parent parameter for hierarchical content types or category for posts or other selection criteria for other content types
 
-
-[nivo
+`[nivo
   post_type="post_type - Post type to display"
   post_parent="|ID - Parent ID to use if not current post"
-]
+]`
 
 
 = What is the FULL syntax for the [nivo] shortcode = 
-[nivo
+`[nivo
   post_type="attachment|post_type - Post type to display"
   theme="default|orman|pascal|oik - Theme for the slideshow"
   class="|classes - CSS classes"
   link="y|n - Link the images to the target post/page"
   caption="y|n - Display the image title as the caption"
   ribbon="y|n - Display the ribbon, if the theme supports it"
-  thumbnail="thumbnail|medium|large|full|nnn|wxh - image size"
+  thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
   numberposts="5|numeric - number to return"
   offset="0|numeric - offset from which to start"
   category="|category-slug - category slugs (comma separated)"
@@ -90,10 +85,10 @@ or category for posts or other selection criteria for other content types
   post_mime_type="|image|application|text|video|mime type - Attached media MIME type"
   post_parent="|ID - Parent ID to use if not current post"
   post_status="publish|pending|draft|auto-draft|future|private|trash|any - Post status"
-]
+]`
 
 = Do I have to remember all those parameters? =
-NO. You can enable the oik shortcode buttons and/or oik quicktags plugin.
+NO. You can enable the oik shortcode buttons and/or oik quicktags plugin. When editing a post/page with TinyMCE or the HTML editor click on the shortcode button to see a list of ALL enabled shortcodes and get syntax help, where available.
 
 
 = What's OIK and why do I need it? = 
@@ -156,7 +151,11 @@ YES. See http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/
 = 1.0 =
 * first version works with oik version 1.11
 
-== Changelog ==
+== Changelog == 
+
+= 1.1.1 =
+* Fixed: Correction for Fatal error due to _sc_thumbnail() not being defined... it's in the next version of OIK.
+
 = 1.1 =
 * Added: link=n parameter for when you just want a slideshow
 * Added: caption=n parameter for when you want plain pictures

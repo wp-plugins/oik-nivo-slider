@@ -144,7 +144,14 @@ function bw_nivo_slider( $atts=null ) {
 
 function nivo__help( $shortcode="nivo" ) {
   return( "Display the nivo slideshow for attachments or other post types." );
-}  
+}
+
+if ( !function_exists( '_sc_thumbnail_full' ) ) {  
+function _sc_thumbnail_full() {   
+  return( array( 'thumbnail'       => bw_skv( "full", "small|medium|large|nnn|wxh", "image size" )   
+               ));
+}        
+}
 
 
 /**
@@ -159,7 +166,7 @@ function nivo__syntax( $shortcode='nivo' ) {
                  , "caption" => bw_skv( "y", "n", "Display the image title as the caption" )
                  , "ribbon" => bw_skv( "y", "n", "Display the ribbon, if the theme supports it" )
                  );
-  $syntax = array_merge( $nivo_syntax, _sc_thumbnail() );
+  $syntax = array_merge( $nivo_syntax, _sc_thumbnail_full() );
   $syntax = array_merge( $syntax, _sc_posts() );
   $syntax = array_merge( $syntax, $nivo_syntax ); // Re-apply the post_type values for this shortcode
   return( $syntax );
