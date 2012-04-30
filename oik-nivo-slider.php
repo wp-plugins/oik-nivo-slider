@@ -1,10 +1,10 @@
 <?php
 /**
 Plugin Name: oik-nivo-slider
-Depends: oik
+Depends: oik base plugin
 Plugin URI: http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/
 Description: [nivo] shortcode for the Nivo slider using oik
-Version: 1.1.1
+Version: 1.2
 Author: bobbingwide
 Author URI: http://www.bobbingwide.com
 License: GPL2
@@ -26,11 +26,27 @@ License: GPL2
     http://www.gnu.org/licenses/gpl-2.0.html
 
 */
-
 add_action( "oik_loaded", "bw_nivo_init" );
 
 function bw_nivo_init() {
-  bw_add_shortcode( "nivo", "bw_nivo_slider", oik_path( "nivo.inc", "oik-nivo-slider" ), false );
+  bw_add_shortcode( "nivo", "bw_nivo_slider", oik_path( "nivo.inc", "oik-nivo-slider" ), false ); 
+  add_action( "admin_menu", "oik_nivo_admin_menu" );
+}
+
+
+function oik_nivo_admin_menu() {
+  require_once( "admin/oik-nivo-slider.php" );
+  oik_nivo_lazy_admin_menu();
+}
+
+
+/* This code will produce a message when oik-nivo-slider is activated but oik isn't */
+add_action( "after_plugin_row_" . plugin_basename(__FILE__), "oik_nivo_activation" );
+add_action( "admin_notices", "oik_nivo_activation" );
+
+function oik_nivo_activation() {
+  require_once( "admin/oik-nivo-slider.php" );
+  oik_nivo_lazy_activation( __FILE__, "oik:1.12", "oik_nivo_inactive" );
 }
 
 

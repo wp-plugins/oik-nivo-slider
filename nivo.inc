@@ -1,4 +1,4 @@
-<?php
+<?php // (C) Copyright Bobbing Wide 2012
 /**
  * Format the Nivo output for posts which have attached images 
  * 
@@ -71,6 +71,35 @@ function bw_format_nivo_attachment( $post, $atts ) {
   }  
 }
 
+/** 
+ * Load screenshot images for the selected plugin (or other plugin files)
+ * e.g [nivo post_type='screenshot:oik-nivo-slider'] or [nivo post_type='screenshot:oik'] 
+ *
+*/    
+function bw_get_screenshots( $atts ) { 
+  $explode = explode( ':', $atts['post_type'] );
+  $type = bw_array_get( $explode, 0, "screenshot" );
+  $plugin = bw_array_get( $explode, 1, "oik-nivo-slider" );
+  // if ( $plugin = "" ) $plugin = "oik-nivo-slider";   
+  $path = oik_path( $type, $plugin );
+  $files = glob( $path . "*" );
+  $urls = bw_file_to_url( $files, $atts );
+  return( $urls );
+}
+
+/**
+ * Format the Nivo output for a screenshot-n.png file
+*/ 
+function bw_format_nivo_screenshot( $fileurl, $atts ) {
+  if ( bw_validate_torf( $atts['caption'] ) ) {
+    $caption = $fileurl;
+  } else {
+    $caption = null;
+  }    
+  $image = retimage( null, $fileurl, $caption );
+  e( $image );
+}
+
 /**
  * Enqueue the debug script if needed otherwise enqueue the minified (packed) one
 */
@@ -82,7 +111,6 @@ function bw_nivo_enqueue_script( ) {
   } 
   $oik_nc_script = 'jquery.oik-nc-click.js';  
   wp_enqueue_script( 'nivo-slider-js', plugin_dir_url( __FILE__) . $script, array( 'jquery') );
-  wp_enqueue_script( 'oik-nc-click.js', plugin_dir_url( __FILE__) . $oik_nc_script, array( 'nivo-slider-js') ); 
 }
 
 /**
@@ -110,20 +138,29 @@ function bw_slider_id() {
 */
 function bw_nivo_slider( $atts=null ) {
   $atts[ 'post_type'] = bw_array_get( $atts, "post_type", "attachment" );
+  $atts[ 'post_mime_type'] = bw_array_get( $atts, "post_mime_type", "image" );
   $theme = bw_array_get( $atts, "theme", "default" );
   $class = bw_array_get( $atts, "class", null );
   $atts['link'] = bw_array_get( $atts, "link", "y" );
   $atts['caption'] = bw_array_get ($atts, "caption", "y" );
   $ribbon = bw_validate_torf( bw_array_get(  $atts, "ribbon", "y" ));
   oik_require( "shortcodes/oik-attachments.php" );
-  $posts = bw_get_posts( $atts );
+  $pos = strpos( $atts['post_type'], ':' ); 
+  if ( $pos != FALSE ) {  
+    $posts = bw_get_screenshots( $atts );
+    $atts['post_type'] = substr( $atts['post_type'], 0, $pos ); 
+  } else {
+    $posts = bw_get_posts( $atts );
+  }  
   if ( $posts ) {
     wp_enqueue_style( "nivo${theme}", plugin_dir_url( __FILE__). "themes/${theme}/${theme}.css" ); 
     wp_enqueue_style( 'nivoCSS', plugin_dir_url( __FILE__). 'nivo-slider.css' ); 
     bw_nivo_enqueue_script();
     $slider_id = bw_slider_id();
-    e( '<script type="text/javascript">jQuery(window).load(function() {  jQuery(\'#slider-'. $slider_id. '\').nivoSlider(); });</script>' );
+    //e( '<script type="text/javascript">jQuery(window).load(function() {  jQuery(\'#slider-'. $slider_id. '\').nivoSlider(); });</script>' );
+    bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( get_option( 'bw_nivo_slider' ) ) );
     if ( bw_validate_torf( $atts['link'] ) ) {
+      wp_enqueue_script( 'oik-nc-click.js', plugin_dir_url( __FILE__) . $oik_nc_script, array( 'nivo-slider-js') ); 
       e( '<script type="text/javascript">jQuery(window).load(function() {  jQuery(\'#slider-'. $slider_id. '\').oikNCClick(); });</script>' );
     }  
     sdiv( $class );
@@ -142,6 +179,9 @@ function bw_nivo_slider( $atts=null ) {
   return bw_ret();
 }
 
+/**
+ * oik shortcode help for [nivo] 
+*/ 
 function nivo__help( $shortcode="nivo" ) {
   return( "Display the nivo slideshow for attachments or other post types." );
 }
@@ -153,9 +193,8 @@ function _sc_thumbnail_full() {
 }        
 }
 
-
 /**
- *
+ * oik shortcode syntax for [nivo]
 */ 
 function nivo__syntax( $shortcode='nivo' ) {
   
@@ -173,9 +212,26 @@ function nivo__syntax( $shortcode='nivo' ) {
 }
 
 /**
- * Produce the code snippet for the nivo shortcode
- * Since the implementing function for the shortcode is not the same as the shortcode we need to let _sc__snippet know
+ * Show an example of the Nivo shortcode
+ *
+ * Note: The default processing is to show attached images
+ * If there is no post (as on admin pages) then it shows unattached images.
+ * An interesting side effect.
 */ 
-function nivo__snippet( $shortcode='nivo' ) {
-  _sc__snippet( $shortcode, null, "bw_nivo_slider" );
+function nivo__example( $shortcode='nivo' ) {
+  $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" class=span-14 caption=n link=n';
+  $text = "Slideshow of the screenshots from oik-nivo-slider, using the oik theme and the current settings. ";
+  //$text .= "The CSS class w70pc causes the slideshow to have a width of 70%. bd-550 sets the min-depth to 550px." ;
+  bw_invoke_shortcode( $shortcode, $atts, $text  );
+  sediv("clear");
 }
+
+/**
+ * Produce the code snippet for the nivo shortcode as used in the example
+*/ 
+function nivo__snippet( $shortcode='nivo', $atts=null ) {
+  $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" class=span-14 caption=n link=n';
+  _sc__snippet( $shortcode, $atts );
+}
+
+

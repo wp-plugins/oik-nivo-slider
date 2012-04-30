@@ -1,27 +1,29 @@
 === oik-nivo-slider ===
 Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
-Tags: shortcode, Nivo, slider, [nivo], oik, jQuery, slideshow
-Requires at least: 3.0.4
-Tested up to: 3.3.1
+Tags: shortcode, Nivo, slider, [nivo], oik, jQuery, slideshow, posts, pages, attachments
+Requires at least: 3.3
+Tested up to: 3.4
 Stable tag: 1.1.1
 
-[nivo] shortcode for the jQuery "Nivo slider" for posts, pages, attachments and custom post types
+[nivo] shortcode for the jQuery "Nivo slider" for posts, pages, attachments and custom post types using oik
 
 == Description ==
 The [nivo] shortcode implements the jQuery Nivo slider, which is considered by some to be "The Most Awesome jQuery Image Slider". 
-See http://nivo.dev7studios.com for more info.
 
 The [nivo] shortcode can be used to display a variety of slideshows with/without links.   
 It can be used to direct the user to any post/page/custom content type.
-The [nivo] shortcode uses the oik plugin's shortcode API for lazy smart shortcodes.
 
-You can see an example of the code in action here:
- 
+The [nivo] shortcode uses the oik plugin's shortcode API for *lazy smart* shortcodes.
 
-http://rowlandscastlewebdesign.com/wp-pompey-mar2012/home/slideshows-2/slideshow-requirements/nivo/
+Note: oik-nivo-slider is dependent upon the oik plugin. 
+You can activate it but it will not function correctly unless the pre-requisite version of oik is also activated.
+Download oik from 
+[oik download](http://wordpress.org/extend/plugins/oik/)
 
-see also the 'Nivo for posts' and 'Nivo for pages' pages on this WordPress Multi Site site. 
+[Find out more](http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/)
+
+See also [dev 7 studios](http://nivo.dev7studios.com) for more information about the jQuery code,
 
 
 == Installation ==
@@ -107,10 +109,11 @@ OR exclude the post from the list ( exclude=id1,id2 )
 
 
 = Do I need to make my images the same size? =
-YES. There is no auto cropping?
+YES. There is no auto cropping. 
+Remember: You can use Add Media Edit Image after you have uploaded your files. This can be used to scale and crop images.
 
 = Can I control the slideshow transitions? =
-This is planned for a future version.
+YES. Use the Nivo slider settings page.
 
 = Can I provide my own themeing? =
 This is planned for a future version.
@@ -136,7 +139,7 @@ http://nivo.dev7studios.com/features/#wordpress
 
 
 = Can you tell me more? =
-YES. See http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/
+YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/)
 
 
 == Screenshots ==
@@ -146,12 +149,31 @@ YES. See http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/
 4. Nivo slider with the oik theme - not hovered over [nivo theme=oik]
 5. Nivo slider with the oik theme - image hovered over
 6. Nivo slider with the oik theme - caption hovered over
+7. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.2 = 
+* Please upgrade oik to version 1.2 before installing oik-nivo-slider v1.2
+
+* In order to allow you to change the default slideshow behaviour I needed to add some new functions to oik
+* Rather than make the functions pluggable I decided it was better to improve the plugin dependency logic
+* So version 1.2 is now dependent upon oik version 1.12
+* If you have oik version 1.11 or earlier then the plugin will activate and issue warning messages
+* BUT it will not work!
+  
 = 1.0 =
 * first version works with oik version 1.11
 
 == Changelog == 
+= 1.2 =
+* Added: Default slideshow options can be configured
+* Added: post_mime_type parameter defaults to "image"
+* Added: option to display "screenshot" files from installed plugins [nivo post_type="screenshot:oik-nivo-slider"]
+* Changed: The example logic will display the oik-nivo-slider screenshots
+* Changed: oik-nivo-slider will now produce warning messages when the pre-requisite version of the oik plugin is not satisfied
+* Changed: BUT it WILL crash if you try to run it against oik version 1.11
+* Fixed: Corrected the name of the oik base plugin when using Plugin Dependencies
+* Fixed: minimum version of WordPress required is 3.3 
 
 = 1.1.1 =
 * Fixed: Correction for Fatal error due to _sc_thumbnail() not being defined... it's in the next version of OIK.
