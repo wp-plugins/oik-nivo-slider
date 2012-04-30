@@ -47,7 +47,12 @@ add_action( "admin_notices", "oik_nivo_activation" );
 /**
  * Note: oik version 1.12's dependency checking did not work for WordPress MultiSite
  * so oik-nivo-slider v1.2 is NOW dependent upon oik version 1.12.1 in MultSite
- * but it will work with oik version 1.12 in a single installation
+ * FOR dependency checking only
+ * but it (dependency checking) will work with oik version 1.12 in a single site solution.
+ * 
+ *
+ * 2012/04/30 - pragmatic solution to the problem is... don't bother to check for the dependency if multisite - assume the installer can RTFM
+ *
 */ 
 function oik_nivo_activation() {
   require_once( "admin/oik-nivo-slider.php" );
@@ -55,8 +60,8 @@ function oik_nivo_activation() {
     $depends = "oik:1.12.1"; 
   } else {
     $depends = "oik:1.12";
+    oik_nivo_lazy_activation( __FILE__, $depends, "oik_nivo_inactive" );
   }     
-  oik_nivo_lazy_activation( __FILE__, $depends, "oik_nivo_inactive" );
 }
 
 
