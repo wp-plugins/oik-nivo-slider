@@ -44,9 +44,19 @@ function oik_nivo_admin_menu() {
 add_action( "after_plugin_row_" . plugin_basename(__FILE__), "oik_nivo_activation" );
 add_action( "admin_notices", "oik_nivo_activation" );
 
+/**
+ * Note: oik version 1.12's dependency checking did not work for WordPress MultiSite
+ * so oik-nivo-slider v1.2 is NOW dependent upon oik version 1.12.1 in MultSite
+ * but it will work with oik version 1.12 in a single installation
+*/ 
 function oik_nivo_activation() {
   require_once( "admin/oik-nivo-slider.php" );
-  oik_nivo_lazy_activation( __FILE__, "oik:1.12", "oik_nivo_inactive" );
+  if ( is_multisite() ) { 
+    $depends = "oik:1.12.1"; 
+  } else {
+    $depends = "oik:1.12";
+  }     
+  oik_nivo_lazy_activation( __FILE__, $depends, "oik_nivo_inactive" );
 }
 
 
