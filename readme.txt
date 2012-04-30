@@ -153,13 +153,15 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 
 == Upgrade Notice ==
 = 1.2 = 
-* Please upgrade oik to version 1.2 before installing oik-nivo-slider v1.2
+* Please upgrade oik to at least version 1.12 before installing oik-nivo-slider v1.2
+* The minimum requirement for a WordPress Multisite solution is oik version 1.12.1     
 
 * In order to allow you to change the default slideshow behaviour I needed to add some new functions to oik
 * Rather than make the functions pluggable I decided it was better to improve the plugin dependency logic
 * So version 1.2 is now dependent upon oik version 1.12
 * If you have oik version 1.11 or earlier then the plugin will activate and issue warning messages
 * BUT it will not work!
+* If you are installing into a WordPress MultiSite environment oik version 1.2.1 is needed
   
 = 1.0 =
 * first version works with oik version 1.11
@@ -173,7 +175,8 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * Changed: oik-nivo-slider will now produce warning messages when the pre-requisite version of the oik plugin is not satisfied
 * Changed: BUT it WILL crash if you try to run it against oik version 1.11
 * Fixed: Corrected the name of the oik base plugin when using Plugin Dependencies
-* Fixed: minimum version of WordPress required is 3.3 
+* Fixed: minimum version of WordPress required is 3.3
+* Fixed: Added a workaround to allow oik version 1.12 on single site, but needing oik v1.12.1 for MultiSite 
 
 = 1.1.1 =
 * Fixed: Correction for Fatal error due to _sc_thumbnail() not being defined... it's in the next version of OIK.
