@@ -12,7 +12,9 @@ function bw_format_nivo( $post, $atts ) {
     $atts['title'] = get_the_title( $post->ID );
   $atts['thumbnail'] = bw_array_get( $atts, "thumbnail", "full" );
   $thumbnail = bw_thumbnail( $post->ID, $atts );
+  
   $permalink = get_permalink( $post->ID );
+  
   if ( bw_validate_torf( $atts['link'] ) ) {
     alink( null, $permalink , $thumbnail, null);  
   } else {
@@ -42,6 +44,7 @@ function bw_get_attached_file_name( $post_id ) {
   return( $image );
 }
 
+
 /**
  * Format the Nivo output for attached images
  *
@@ -59,11 +62,11 @@ function bw_format_nivo_attachment( $post, $atts ) {
   } else {
     $title = null;
   }    
-  $permalink = get_permalink( $post->ID );
   $image = bw_get_attached_file_name( $post->ID );
   if ( $image ) {
     $thumbnail = retimage( null, $image , $title );
     if ( bw_validate_torf( $atts['link'] ) ) {
+      $permalink = bw_get_image_link( $post->ID );
       alink( null, $permalink , $thumbnail, null );  
     } else {
       e( $thumbnail );
@@ -109,7 +112,6 @@ function bw_nivo_enqueue_script( ) {
   } else {
     $script = 'jquery.nivo.slider.pack.js'; 
   } 
-  $oik_nc_script = 'jquery.oik-nc-click.js';  
   wp_enqueue_script( 'nivo-slider-js', plugin_dir_url( __FILE__) . $script, array( 'jquery') );
 }
 
@@ -158,10 +160,12 @@ function bw_nivo_slider( $atts=null ) {
     bw_nivo_enqueue_script();
     $slider_id = bw_slider_id();
     //e( '<script type="text/javascript">jQuery(window).load(function() {  jQuery(\'#slider-'. $slider_id. '\').nivoSlider(); });</script>' );
-    bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( get_option( 'bw_nivo_slider' ) ) );
+    bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( get_option( 'bw_nivo_slider' ) ), true );
     if ( bw_validate_torf( $atts['link'] ) ) {
+      $oik_nc_script = 'jquery.oik-nc-click.js';  
       wp_enqueue_script( 'oik-nc-click.js', plugin_dir_url( __FILE__) . $oik_nc_script, array( 'nivo-slider-js') ); 
-      e( '<script type="text/javascript">jQuery(window).load(function() {  jQuery(\'#slider-'. $slider_id. '\').oikNCClick(); });</script>' );
+      //e( '<script type="text/javascript">jQuery(window).load(function() {  jQuery(\'#slider-'. $slider_id. '\').oikNCClick(); });</script>' );
+      bw_jquery( "#slider-$slider_id", "oikNCClick", null, true );
     }  
     sdiv( $class );
     sdiv( "slider-wrapper theme-${theme}" );

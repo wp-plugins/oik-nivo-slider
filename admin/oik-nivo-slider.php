@@ -45,11 +45,9 @@ function oik_nivo_lazy_activation( $plugin=null, $dependencies=null, $callback=n
 
 function oik_nivo_lazy_admin_menu() {
   register_setting( 'oik_nivo_options', 'bw_nivo_slider', 'oik_plugins_validate' ); // No validation for oik-money / oik-nivo-slider
-  //add_options_page('oik money', 'oik money', 'manage_options', 'oik_money_options', 'oik_money_options_do_page');
-  
-  // add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function ); 
   add_submenu_page( 'oik_menu', 'oik nivo slider settings', "Nivo settings", 'manage_options', 'oik_nivo', "oik_nivo_options_do_page" );
 }
+
 
 /**
  * Coding Nivo slider fields here just for the hell of it 

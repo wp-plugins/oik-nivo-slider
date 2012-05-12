@@ -5,6 +5,8 @@ Tags: shortcode, Nivo, slider, [nivo], oik, jQuery, slideshow, posts, pages, att
 Requires at least: 3.3
 Tested up to: 3.4
 Stable tag: 1.2
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 [nivo] shortcode for the jQuery "Nivo slider" for posts, pages, attachments and custom post types using oik
 
@@ -152,6 +154,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 7. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.3 =
+* Please upgrade to oik-nivo-slider v1.3 when you upgrade to oik v1.13. A change in oik's bw_jquery() function could have caused slideshow images to be hidden.
+
 = 1.2 = 
 * Please upgrade oik to at least version 1.12 before installing oik-nivo-slider v1.2
 * The minimum requirement for a WordPress Multisite solution is oik version 1.12.1     
@@ -166,7 +171,12 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 = 1.0 =
 * first version works with oik version 1.11
 
-== Changelog == 
+== Changelog ==
+= 1.3 = 
+* Added: Link to any content from attached images 
+* Fixed: calls bw_jquery() setting $windowload parameter to true... the default in oik v1.13 is false
+* Fixed: can't click on captions - undefined variable oik_nc_script
+
 = 1.2 =
 * Added: Default slideshow options can be configured
 * Added: post_mime_type parameter defaults to "image"

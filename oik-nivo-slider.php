@@ -4,7 +4,7 @@ Plugin Name: oik-nivo-slider
 Depends: oik base plugin
 Plugin URI: http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/
 Description: [nivo] shortcode for the Nivo slider using oik
-Version: 1.2
+Version: 1.3
 Author: bobbingwide
 Author URI: http://www.bobbingwide.com
 License: GPL2
@@ -47,12 +47,7 @@ add_action( "admin_notices", "oik_nivo_activation" );
 /**
  * Note: oik version 1.12's dependency checking did not work for WordPress MultiSite
  * so oik-nivo-slider v1.2 is NOW dependent upon oik version 1.12.1 in MultSite
- * FOR dependency checking only
- * but it (dependency checking) will work with oik version 1.12 in a single site solution.
- * 
- *
- * 2012/04/30 - pragmatic solution to the problem is... don't bother to check for the dependency if multisite - assume the installer can RTFM
- *
+ * but it will work with oik version 1.12 in a single installation
 */ 
 function oik_nivo_activation() {
   require_once( "admin/oik-nivo-slider.php" );
@@ -60,8 +55,8 @@ function oik_nivo_activation() {
     $depends = "oik:1.12.1"; 
   } else {
     $depends = "oik:1.12";
-    oik_nivo_lazy_activation( __FILE__, $depends, "oik_nivo_inactive" );
   }     
+  oik_nivo_lazy_activation( __FILE__, $depends, "oik_nivo_inactive" );
 }
 
 
