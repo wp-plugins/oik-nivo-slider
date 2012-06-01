@@ -1,56 +1,15 @@
 <?php // (C) Copyright Bobbing Wide 2012 
 
 /**
- * Display a message when oik-nivo-slider is not fully functional due to the dependencies not being activated or installed
- * Note: We can't use oik APIs here as we don't know if it's activated.
- * If the message is issued due to a version mismatch then there is a chance that one plugin attempts to use
- * functions that are not available in the dependent plugin. How do we manage this?
-*/
-function oik_nivo_inactive( $plugin=null, $dependencies=null ) {
-  $dependencies = str_replace( ":", " version ", $dependencies );
-  $text = "<p><b>oik-nivo-slider may not be fully functional</b>. It is dependent upon the <b>oik</b> plugin. ";
-  $text.= "Please install and activate the required version of this plugin: $dependencies</p>";
-  if ( current_filter() == "admin_notices" ) {
-    $message = '<div class=" updated fade">';
-    $message .= $text;
-    $message .= '</div>'; 
-    
-  } else {
-    $message = '<tr class="plugin-update-tr">';
-    $message .= '<td colspan="3" class="plugin-update colspanchange">';
-    $message .= '<div class="update-message">';
-    $message .= $text;
-    $message .= "</div>";
-    $message .= "</td>";
-    $message .= "</tr>";
-  }
-  echo $message; 
-}
-
-/**
- * Test if oik-nivo-slider is functional
- * 
- * Unless oik is installed and activated oik-nivo-slider won't do anything
- * Note: If oik is installed and activated then we shouldn't have any problem
- * unless there's a version number mismatch.
-*/
-function oik_nivo_lazy_activation( $plugin=null, $dependencies=null, $callback=null ) {
-  if ( function_exists( "oik_depends" ) ) {  
-    /* Good - oik appears to be activated and loaded */
-    oik_depends( $plugin, $dependencies, $callback );
-  } else {
-    call_user_func( $callback, $plugin, $dependencies );
-  }   
-}
-
+ * Define Nivo slider settings fields and page
+ */
 function oik_nivo_lazy_admin_menu() {
-  register_setting( 'oik_nivo_options', 'bw_nivo_slider', 'oik_plugins_validate' ); // No validation for oik-money / oik-nivo-slider
+  register_setting( 'oik_nivo_options', 'bw_nivo_slider', 'oik_plugins_validate' ); // No validation for oik-nivo-slider
   add_submenu_page( 'oik_menu', 'oik nivo slider settings', "Nivo settings", 'manage_options', 'oik_nivo', "oik_nivo_options_do_page" );
 }
 
-
 /**
- * Coding Nivo slider fields here just for the hell of it 
+ * Nivo slider settings page
 */
 function oik_nivo_options_do_page() {
   oik_menu_header( "Nivo slider options", "w50pc" );

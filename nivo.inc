@@ -140,7 +140,12 @@ function bw_slider_id() {
 */
 function bw_nivo_slider( $atts=null ) {
   $atts[ 'post_type'] = bw_array_get( $atts, "post_type", "attachment" );
-  $atts[ 'post_mime_type'] = bw_array_get( $atts, "post_mime_type", "image" );
+  if ( $atts['post_type'] == "attachment" ) {
+    $def_post_mime_type = "image"; 
+  } else {
+    $def_post_mime_type = null;  
+  }  
+  $atts[ 'post_mime_type'] = bw_array_get( $atts, "post_mime_type", $def_post_mime_type );
   $theme = bw_array_get( $atts, "theme", "default" );
   $class = bw_array_get( $atts, "class", null );
   $atts['link'] = bw_array_get( $atts, "link", "y" );

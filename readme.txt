@@ -154,6 +154,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 7. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.4 =
+* Version 1.4 should work with oik v1.13. 
+
 = 1.3 =
 * Please upgrade to oik-nivo-slider v1.3 when you upgrade to oik v1.13. A change in oik's bw_jquery() function could have caused slideshow images to be hidden.
 
@@ -172,6 +175,11 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.4 =
+* Added: Improved dependency checking. oik-nivo-slider will produce a link to install, upgrade or activate oik
+* Fixed: slider only working for post_type="attachment" since the post_mime_type=image parameter was being set incorrectly
+* Note: There is a workaround for the above problem; include `post_mime_type=" " thumbnail="large"` in the shortcode 
+
 = 1.3 = 
 * Added: Link to any content from attached images 
 * Fixed: calls bw_jquery() setting $windowload parameter to true... the default in oik v1.13 is false
