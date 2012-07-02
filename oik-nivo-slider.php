@@ -52,9 +52,9 @@ add_action( "admin_notices", "oik_nivo_activation" );
 function oik_nivo_activation() {
   require_once( "admin/oik-activation.php" );
   if ( is_multisite() ) { 
-    $depends = "oik:1.12.1"; 
+    $depends = "oik:1.14"; 
   } else {
-    $depends = "oik:1.12";
+    $depends = "oik:1.14";
   }     
   oik_plugin_lazy_activation( __FILE__, $depends, "oik_plugin_plugin_inactive" );
 }

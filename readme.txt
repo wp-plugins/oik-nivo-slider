@@ -3,7 +3,7 @@ Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags: shortcode, Nivo, slider, [nivo], oik, jQuery, slideshow, posts, pages, attachments
 Requires at least: 3.3
-Tested up to: 3.4
+Tested up to: 3.4.1
 Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -46,6 +46,13 @@ If you simply want to show all the attached images to a page, post or custom pos
 = I typed [nivo] and got [nivo] back =
 You need to activate both the oik-nivo-slider plugin and the oik base plugin. The [nivo] shortcode only becomes functional when [oik] is loaded.
 
+= My images do not appear in the slider =
+The most common fixes to this problem are:
+
+* Upgrade your version of oik to 1.14 (or higher) 
+* Don't insert the images that you want in the slideshow into the page; just upload media and save changes.
+* The slider requires jQuery. Check that your theme files contain calls to wp_head() and wp_footer().
+
 = What are the parameters to the [nivo] shortcode? =
 The basic parameters that control the display of the Nivo slider are:
 
@@ -78,7 +85,8 @@ Use the post_type parameter to specify the content type and either the post_pare
   thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
   numberposts="5|numeric - number to return"
   offset="0|numeric - offset from which to start"
-  category="|category-slug - category slugs (comma separated)"
+  category="|category-id - category IDs (comma separated)"
+  category_name="|category-slug - category slugs (comma separated)"
   customcategoryname="|category-slug - custom category slug"
   orderby="date|ID|title|parent|rand|menu_order - Sort sequence"
   order="DESC|ASC - Sort order."
@@ -125,15 +133,13 @@ YES. You can use the [nivo] shortcode in sidebars, headers and footers
 as well as in posts, pages, and custom post types.
 Remember you may need to set the post_parent parameter to control which posts are loaded.
 
-
 = Which version of the jQuery Nivo slider code is needed? = 
 The plugin includes the FREE jQuery Nivo slider v2.7.1 from http://nivo.dev7studios.com/features/
 excluding the demo files.
 There are some minor additions to the nivo-slider.css file to support additional function provided by the oik Nivo slider
 
 = Which version of jQuery does it use? =
-It uses the jQuery library provided by WordPress 
-
+It uses the jQuery library provided by WordPress. In WordPress 3.3.1 it was 1.7.1. For WordPress 3.4.1 it is 1.7.2
 
 = What's the difference between this plugin and Nivo's WordPress plugin =
 I have not tried Nivo's plugin. But you can read about it and watch a video here
@@ -155,7 +161,7 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 
 == Upgrade Notice ==
 = 1.4 =
-* Version 1.4 should work with oik v1.13. 
+* Version 1.4 should be used with oik version 1.14, which includes a number of fixes required by oik-nivo-slider
 
 = 1.3 =
 * Please upgrade to oik-nivo-slider v1.3 when you upgrade to oik v1.13. A change in oik's bw_jquery() function could have caused slideshow images to be hidden.
