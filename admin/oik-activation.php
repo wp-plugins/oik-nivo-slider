@@ -100,7 +100,7 @@ function oik_plugin_check_installed_plugin( $plugin ) {
   if ( count( $plugins )) {
     foreach ( $plugins as $plugin_name => $plugin_details ) {
       if ( strpos( $plugin_name, $needle ) ) {
-        bw_trace2( $plugin_name, $needle );
+        //bw_trace2( $plugin_name, $needle );
         $plugin_to_activate['Name'] = $plugin_details['Name'];
         $plugin_to_activate['file'] = $plugin_name;
         break;

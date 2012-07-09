@@ -160,6 +160,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 7. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.5 =
+* Version 1.5 should be used with oik version 1.15. 
+
 = 1.4 =
 * Version 1.4 should be used with oik version 1.14, which includes a number of fixes required by oik-nivo-slider
 
@@ -181,6 +184,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.5 =
+* Fixed: Unrecoverable fatal error in admin pages if the oik base plugin is deactivated. Missing bw_trace2()
+
 = 1.4 =
 * Added: Improved dependency checking. oik-nivo-slider will produce a link to install, upgrade or activate oik
 * Fixed: slider only working for post_type="attachment" since the post_mime_type=image parameter was being set incorrectly
