@@ -100,8 +100,8 @@ Use the post_type parameter to specify the content type and either the post_pare
 ]`
 
 = Do I have to remember all those parameters? =
-NO. You can enable the oik shortcode buttons and/or oik quicktags plugin. When editing a post/page with TinyMCE or the HTML editor click on the shortcode button to see a list of ALL enabled shortcodes and get syntax help, where available.
-
+NO. You can enable the oik TinyMCE shortcode or quicktag buttons. See oik options > Buttons.
+When editing a post/page with TinyMCE or the HTML editor click on the shortcode button to see a list of ALL enabled shortcodes and get syntax help, where available.
 
 = What's OIK and why do I need it? = 
 The oik Nivo slider is developed using the OIK (Often Included Key Information) API (Application Programming Interface).
@@ -129,14 +129,24 @@ YES. Use the Nivo slider settings page.
 This is planned for a future version.
 
 = Can I put the [nivo] shortcode in my sidebar? =
-YES. You can use the [nivo] shortcode in sidebars, headers and footers
-as well as in posts, pages, and custom post types.
+YES. You can use the [nivo] shortcode in sidebars, headers and footers by using a text widget.
+It's just like entering the shortcode into a post, page or custom post type.
 Remember you may need to set the post_parent parameter to control which posts are loaded.
+
+= Can I code the shortcode into header.php? =
+Not directly. In order to get the shortcode to expand you need to wrap it in some php.
+One way of achieving this is to code
+`<?php echo do_shortcode('[nivo post_type=attachment post_parent=487 caption=n]'); ?>`
+
 
 = Which version of the jQuery Nivo slider code is needed? = 
 The plugin includes the FREE jQuery Nivo slider v2.7.1 from http://nivo.dev7studios.com/features/
 excluding the demo files.
 There are some minor additions to the nivo-slider.css file to support additional function provided by the oik Nivo slider
+
+= Does it support version 3.1 of the jQuery Nivo slider? =
+This is planned for a future version. 
+
 
 = Which version of jQuery does it use? =
 It uses the jQuery library provided by WordPress. In WordPress 3.3.1 it was 1.7.1. For WordPress 3.4.1 it is 1.7.2
@@ -160,6 +170,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 7. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.6 =
+* Version 1.6 should be used with oik version 1.16.
+
 = 1.5 =
 * Version 1.5 should be used with oik version 1.15. 
 
@@ -184,6 +197,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.6 =
+* Fixed: Added support for the thumbnail parameter. Required when the full size image is much larger than the slider size.  
+
 = 1.5 =
 * Fixed: Unrecoverable fatal error in admin pages if the oik base plugin is deactivated. Missing bw_trace2()
 

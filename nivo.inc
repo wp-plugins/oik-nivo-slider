@@ -22,25 +22,281 @@ function bw_format_nivo( $post, $atts ) {
   }    
 }
 
+/**
+ * Determine if now is closer to wanted than the best so far
+ * 
+ * @param integer $wanted - the exact value we want to match
+ * @param integer $best - the best value so far
+ * @param integer $now - the current value
+ * @return integer $result - one of the followig
+ *
+ * 9 = perfect - this is the exact value
+ * 3 = better - the new value is better than best so far
+ * 1 = same - the new value is the same as the best so far, but it's not the wanted value
+ * 0 = worse - the new value is not as good as the best so far
+ * 
+ * x is the EXACT value that we want - the $wanted variable
+ * 
+ * In the table below: z > y > x > w > 0
+ *
+ * $best $now     result
+ * ----- -----    ------------
+ * 0     w/y/z    3 = better
+ * 0     x        9 = perfect
+ * w     w        1 = same
+ * w     x        9 = perfect
+ * w     y/z      3 = better
+ * x     w        0 = worse         
+ * x     x        9 = perfect       
+ * x     y/z      0 = worse
+ * y     w        0 = worse
+ * y     x        9 = perfect
+ * y     y        1 = same
+ * y     z        0 = worse
+ * z     w        0 = worse
+ * z     x        9 = perfect
+ * z     y        3 = better
+ * z     z        1 = same
+ * 
+ */
+function bw_closer( $wanted, $best, $now ) {
+  if ( $wanted == $best  ) {
+    if ( $now == $best ) {
+      $result = 9;
+    } else {
+      $result = 0;
+    }  
+  } elseif ( $now == $wanted ) {
+      $result = 9;
+  } elseif ( $best == 0 ) {
+      $result = 3;  
+  } elseif ( ( $now < $best ) && ( $now > $wanted) ) {
+      $result = 3;
+  } elseif ( $now == $best ) {
+      $result = 1;
+  } else {
+    $result = 0;
+  }
+  return( $result );
+}        
+
+/**
+ * Determine if this size is a better match than before? 
+ * Note: Best width and height start at 0
+ * @param integer $sw - required width
+ * @param integer $sh - required height
+ * @param integer $best_width - best width so far
+ * @param integer $best_height - best height so far
+ * @param integer $width - current width
+ * @param integer $height - current height
+ * @param integer $best_score - "score" for best so far
+ * @return integer $result - new score if better or 0 if not
+ *
+ */
+function bw_better_fit( $sw, $sh, $best_width, $best_height, $width, $height, $best_score ) {
+  $closer_w = bw_closer( $sw, $best_width, $width );
+  $closer_h = bw_closer( $sh, $best_height, $height );
+  $score = $closer_w + $closer_h;
+   
+  if ( $score > $best_score )
+    $result = $score;
+  else
+    $result = 0;
+  return( $result );    
+}
+
+/**
+ * Find the best fitting file for the chosen size 
+ *
+ * @param array - array of files and their sizes
+ * @param array - size array - size[0]= width, size[1] = height 
+ * @return string chose file name or 
+ * Choose the best fitting image from the available selection
+ 
+            [sizes] => Array
+                (
+                    [thumbnail] => Array
+                        (
+                            [file] => nggallery-example1-150x150.jpg
+                            [width] => 150
+                            [height] => 150
+                        )
+
+                    [medium] => Array
+                        (
+                            [file] => nggallery-example1-256x130.jpg
+                            [width] => 256
+                            [height] => 130
+                        )
+                    [full] => Array built from the information for the full size file    
+
+                )
+ * 
+ * Note: Since we're not going to scale the file then we just try to find something that's a reasonable size.
+ * We ignore the aspect ratio
+ *
+ */
+function bw_get_by_size( $sizes, $size ) {
+  $sw = $size[0];
+  $sh = $size[1];
+
+  $best_width = 0;
+  $best_height = 0;
+  $best_file = null;
+  $best_score = 0;
+  foreach ( $sizes as $fileinfo ) {
+     
+    $file = bw_array_get( $fileinfo, "file", null );
+    $width = bw_array_get( $fileinfo, "width", 0 );
+    $height = bw_array_get( $fileinfo, "height", 0 );
+    if (( $sw == $width ) && ( $sh == $height )) {
+      $best_file = $file;
+      bw_trace2( $best_file, "best file", false );
+      break;
+    } 
+    if ( $fit = bw_better_fit( $sw, $sh, $best_width, $best_height, $width, $height, $best_score ) ) {
+      $best_file = $file;
+      $best_width = $width;
+      $best_height = $height; 
+      $best_score = $fit;
+    }
+    
+  }
+  bw_trace2( $best_file, "best file now", false );  
+  if ( !$best_file ) {
+    $best_file = $file;
+  }  
+  bw_trace2( $best_file, "I chose" );
+  return( $best_file );
+}
+
+/**
+ * get best fitting image file name WITHOUT resizing
+ * 
+ * @param ID - post id of the image
+ * @param mixed - size - either as a named size or array
+ * @return string - path for the chosed attached image (within wp-uploads)
+ */
+function bw_get_best_fit( $post_id, $size ) {
+  $image = null;
+  $metadata = get_post_meta( $post_id, "_wp_attachment_metadata", false );
+  //bw_trace2( $metadata, "metadata", false );
+  if ( $metadata ) {
+    $first = bw_array_get( $metadata, 0, null );
+    if ( $first ) {
+      $file = bw_array_get( $first, "file", null );
+      if ( $file ) { 
+        $sizes = bw_array_get( $first, "sizes", null );
+        //bw_trace2( $sizes, "sizes", false );
+        if ( $sizes ) {
+          if ( !is_array( $size ) ) {
+            $images = bw_array_get( $sizes, $size, null );
+            //bw_trace2( $images, "images", false );
+            if ( $images ) { 
+              $image = bw_array_get( $images, "file", null );
+            } else {
+              $image = pathinfo( $file, PATHINFO_BASENAME );
+            }  
+          } else {
+            $sizes[ 'full' ] = array( "file" => pathinfo( $file, PATHINFO_BASENAME )
+                                  , "width" => bw_array_get( $first, "width", 0 )
+                                  , "height" => bw_array_get( $first, "height", 0 )
+                                  );
+            $image = bw_get_by_size( $sizes, $size );
+            //bw_trace2( $image, "image by_size", false );
+          }
+        }        
+        if ( $image ) {
+          $image = pathinfo( $file, PATHINFO_DIRNAME ) . '/' . $image;
+          //bw_trace2( $image, "image with PATHINFO", false );
+        }
+      }
+    }  
+  }  
+  return( $image );      
+}
+
 /** 
  * Return the 'correct' URL for the attached image
  *
  * @param integer $post_id - the ID of the attachment post
+ * @param array $atts - attributes containing the specified thumbnail size.
  * @return string $image - the URL for the attached image
  *
- * We cannot rely on $post->guid since the uploaded file may have been edited in the media dialog
- * and given a new name. We need to obtain the file name from the metadata and then fully qualify it for the browser
+ * We cannot rely on $post->guid since the uploaded file may have been edited in the media dialog and given a new name. 
+ * We need to obtain the file name from the metadata and then fully qualify it for the browser
+
+    [0] => Array
+        (
+            [width] => 350
+            [height] => 178
+            [hwstring_small] => height='65' width='128'
+            [file] => 2012/03/nggallery-example1.jpg
+            [sizes] => Array
+                (
+                    [thumbnail] => Array
+                        (
+                            [file] => nggallery-example1-150x150.jpg
+                            [width] => 150
+                            [height] => 150
+                        )
+
+                    [medium] => Array
+                        (
+                            [file] => nggallery-example1-256x130.jpg
+                            [width] => 256
+                            [height] => 130
+                        )
+
+                )
+
+            [image_meta] => Array
+                (
+                    [aperture] => 0
+                    [credit] => 
+                    [camera] => 
+                    [caption] => 
+                    [created_timestamp] => 0
+                    [copyright] => 
+                    [focal_length] => 0
+                    [iso] => 0
+                    [shutter_speed] => 0
+                    [title] => 
+                )
+
+        )
+        
+ * When the file is "thumbnail", "medium" or "large" - or any other combination then we need to add the directory information
+ * from the "file" to the selected file
+ * When the thumbnail parameter is a numeric [size] array we need to search the [sizes] array
+ * to try to find the best match for the specified size.
  *
 */ 
-function bw_get_attached_file_name( $post_id ) {
-  $images = get_post_custom_values( "_wp_attached_file", $post_id );
-  //bw_trace2( $images ); 
-  if ( $images ) {
+function bw_get_attached_file_name( $post_id, $atts ) {
+  $size = bw_get_thumbnail_size( $atts );
+  // bw_trace2( $size, "size", false );
+  $image = null;
+  switch ( $size ) { 
+    case 'full':
+      $images = get_post_custom_values( "_wp_attached_file", $post_id );  
+      //bw_trace2( $images ); 
+      if ( $images ) {
+         $image = $images[0];
+      } else { 
+        $image = null;
+      }
+    break; 
+    
+    default:
+      $image = bw_get_best_fit( $post_id, $size );
+      //bw_trace2( $image, "got_image", false ); 
+    break;
+  }
+  if ( $image ) {
     $upload_dir = wp_upload_dir();
-    $image = $upload_dir['baseurl'] . '/' . $images[0];
-  } else {
-    $image = null;
-  }  
+    $image = $upload_dir['baseurl'] . '/' . $image;
+  }
+  // bw_trace2( $image, "attached_image", false ); 
   return( $image );
 }
 
@@ -61,8 +317,11 @@ function bw_format_nivo_attachment( $post, $atts ) {
     $title = get_the_title( $post->ID );
   } else {
     $title = null;
-  }    
-  $image = bw_get_attached_file_name( $post->ID );
+  }   
+   
+  $image = bw_get_attached_file_name( $post->ID, $atts );
+  bw_trace2( $image, "image" );
+  
   if ( $image ) {
     $thumbnail = retimage( null, $image , $title );
     if ( bw_validate_torf( $atts['link'] ) ) {
@@ -149,8 +408,9 @@ function bw_nivo_slider( $atts=null ) {
   $theme = bw_array_get( $atts, "theme", "default" );
   $class = bw_array_get( $atts, "class", null );
   $atts['link'] = bw_array_get( $atts, "link", "y" );
-  $atts['caption'] = bw_array_get ($atts, "caption", "y" );
+  $atts['caption'] = bw_array_get($atts, "caption", "y" );
   $ribbon = bw_validate_torf( bw_array_get(  $atts, "ribbon", "y" ));
+  $atts['thumbnail'] = bw_array_get( $atts, "thumbnail", "full" );
   oik_require( "shortcodes/oik-attachments.php" );
   $pos = strpos( $atts['post_type'], ':' ); 
   if ( $pos != FALSE ) {  
@@ -197,7 +457,7 @@ function nivo__help( $shortcode="nivo" ) {
 
 if ( !function_exists( '_sc_thumbnail_full' ) ) {  
 function _sc_thumbnail_full() {   
-  return( array( 'thumbnail'       => bw_skv( "full", "small|medium|large|nnn|wxh", "image size" )   
+  return( array( 'thumbnail'       => bw_skv( "full", "thumbnail|medium|large|nnn|wxh", "image size" )   
                ));
 }        
 }
