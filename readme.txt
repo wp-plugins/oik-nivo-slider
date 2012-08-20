@@ -25,7 +25,7 @@ Download oik from
 
 [Find out more](http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/)
 
-See also [dev 7 studios](http://nivo.dev7studios.com) for more information about the jQuery code,
+See also [dev 7 studios](http://nivo.dev7studios.com) for more information about the jQuery code.
 
 
 == Installation ==

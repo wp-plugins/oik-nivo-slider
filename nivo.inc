@@ -32,6 +32,7 @@ function bw_format_nivo( $post, $atts ) {
  *
  * 9 = perfect - this is the exact value
  * 3 = better - the new value is better than best so far
+ * 2 = it's a start - well at least it's not 0
  * 1 = same - the new value is the same as the best so far, but it's not the wanted value
  * 0 = worse - the new value is not as good as the best so far
  * 
@@ -41,7 +42,7 @@ function bw_format_nivo( $post, $atts ) {
  *
  * $best $now     result
  * ----- -----    ------------
- * 0     w/y/z    3 = better
+ * 0     w/y/z    2 = it's a start
  * 0     x        9 = perfect
  * w     w        1 = same
  * w     x        9 = perfect
@@ -69,7 +70,9 @@ function bw_closer( $wanted, $best, $now ) {
   } elseif ( $now == $wanted ) {
       $result = 9;
   } elseif ( $best == 0 ) {
-      $result = 3;  
+      $result = 2;  
+  } elseif ( ( $best < $wanted ) && ( $now > $wanted ) ) {
+      $result = 3;    
   } elseif ( ( $now < $best ) && ( $now > $wanted) ) {
       $result = 3;
   } elseif ( $now == $best ) {
@@ -96,12 +99,13 @@ function bw_closer( $wanted, $best, $now ) {
 function bw_better_fit( $sw, $sh, $best_width, $best_height, $width, $height, $best_score ) {
   $closer_w = bw_closer( $sw, $best_width, $width );
   $closer_h = bw_closer( $sh, $best_height, $height );
-  $score = $closer_w + $closer_h;
+  $score = ( $closer_w * 10 )  + $closer_h;
    
-  if ( $score > $best_score )
+  if ( $score >= $best_score )
     $result = $score;
   else
     $result = 0;
+  bw_trace2( $score );
   return( $result );    
 }
 
@@ -273,7 +277,7 @@ function bw_get_best_fit( $post_id, $size ) {
  *
 */ 
 function bw_get_attached_file_name( $post_id, $atts ) {
-  $size = bw_get_thumbnail_size( $atts );
+  $size = bw_array_get( $atts, "thumbnail", "full" );
   // bw_trace2( $size, "size", false );
   $image = null;
   switch ( $size ) { 
@@ -288,6 +292,7 @@ function bw_get_attached_file_name( $post_id, $atts ) {
     break; 
     
     default:
+      $size = bw_get_thumbnail_size( $atts );
       $image = bw_get_best_fit( $post_id, $size );
       //bw_trace2( $image, "got_image", false ); 
     break;
