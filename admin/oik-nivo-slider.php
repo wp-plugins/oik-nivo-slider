@@ -38,7 +38,7 @@ function oik_nivo_options_do_page() {
       x	directionNav: true,
       x	directionNavHide: true,
       x	controlNav: true,
-      	controlNavThumbs: false,
+      x	controlNavThumbs: false,
         controlNavThumbsFromRel: false,
       	controlNavThumbsSearch: '.jpg',
       	controlNavThumbsReplace: '_thumb.jpg',
@@ -64,7 +64,7 @@ function oik_nivo_slider_options() {
   bw_flush();
   settings_fields('oik_nivo_options');
   $effect_options = array( 'random', 'sliceDownRight','sliceDownLeft','sliceUpRight','sliceUpLeft','sliceUpDown','sliceUpDownLeft','fold','fade',
-                'boxRandom','boxRain','boxRainReverse','boxRainGrow','boxRainGrowReverse' );
+                'boxRandom','boxRain','boxRainReverse','boxRainGrow','boxRainGrowReverse', 'slideInLeft', 'slideInRight' );
   $effect_options_assoc = bw_assoc( $effect_options );                
                 
   bw_select_arr( $option, "Effect", $options, 'effect', array( "#options" => $effect_options_assoc ) );
@@ -76,7 +76,7 @@ function oik_nivo_slider_options() {
   bw_textfield_arr( $option, "Pause time", $options, 'pauseTime', 4 );
   
   bw_checkbox_arr( $option, "Control nav", $options, 'controlNav' );
-  //bw_checkbox_arr( $option, "Control nav thumbs", $options, 'controlNavThumbs' );
+  bw_checkbox_arr( $option, "Control nav thumbs (thumbs=n|y)", $options, 'controlNavThumbs' );
   //bw_textfield_arr( $option, "Control nav thumbs search", $options, 'controlNavThumbsSearch', 20 );
   //bw_textfield_arr( $option, "Control nav thumbs replace", $options, 'controlNavThumbsReplace', 20 );
   bw_checkbox_arr( $option, "Direction nav", $options, 'directionNav' );

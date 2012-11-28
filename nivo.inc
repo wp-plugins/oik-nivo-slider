@@ -12,9 +12,7 @@ function bw_format_nivo( $post, $atts ) {
     $atts['title'] = get_the_title( $post->ID );
   $atts['thumbnail'] = bw_array_get( $atts, "thumbnail", "full" );
   $thumbnail = bw_thumbnail( $post->ID, $atts );
-  
   $permalink = get_permalink( $post->ID );
-  
   if ( bw_validate_torf( $atts['link'] ) ) {
     alink( null, $permalink , $thumbnail, null);  
   } else {
@@ -28,7 +26,7 @@ function bw_format_nivo( $post, $atts ) {
  * @param integer $wanted - the exact value we want to match
  * @param integer $best - the best value so far
  * @param integer $now - the current value
- * @return integer $result - one of the followig
+ * @return integer $result - one of the following
  *
  * 9 = perfect - this is the exact value
  * 3 = better - the new value is better than best so far
@@ -184,7 +182,7 @@ function bw_get_by_size( $sizes, $size ) {
 function bw_get_best_fit( $post_id, $size ) {
   $image = null;
   $metadata = get_post_meta( $post_id, "_wp_attachment_metadata", false );
-  //bw_trace2( $metadata, "metadata", false );
+  bw_trace2( $metadata, "metadata" );
   if ( $metadata ) {
     $first = bw_array_get( $metadata, 0, null );
     if ( $first ) {
@@ -209,7 +207,10 @@ function bw_get_best_fit( $post_id, $size ) {
             $image = bw_get_by_size( $sizes, $size );
             //bw_trace2( $image, "image by_size", false );
           }
-        }        
+        } else {
+          $image = pathinfo( $file, PATHINFO_BASENAME );
+        }  
+               
         if ( $image ) {
           $image = pathinfo( $file, PATHINFO_DIRNAME ) . '/' . $image;
           //bw_trace2( $image, "image with PATHINFO", false );
@@ -278,7 +279,7 @@ function bw_get_best_fit( $post_id, $size ) {
 */ 
 function bw_get_attached_file_name( $post_id, $atts ) {
   $size = bw_array_get( $atts, "thumbnail", "full" );
-  // bw_trace2( $size, "size", false );
+  bw_trace2( $size, "size" );
   $image = null;
   switch ( $size ) { 
     case 'full':
@@ -294,7 +295,7 @@ function bw_get_attached_file_name( $post_id, $atts ) {
     default:
       $size = bw_get_thumbnail_size( $atts );
       $image = bw_get_best_fit( $post_id, $size );
-      //bw_trace2( $image, "got_image", false ); 
+      bw_trace2( $image, "got_image", false ); 
     break;
   }
   if ( $image ) {
@@ -328,14 +329,16 @@ function bw_format_nivo_attachment( $post, $atts ) {
   bw_trace2( $image, "image" );
   
   if ( $image ) {
-    $thumbnail = retimage( null, $image , $title );
+    $thumbnail = retimage( null, $image , $title, null, null, kv("data-thumb", $image) );
     if ( bw_validate_torf( $atts['link'] ) ) {
       $permalink = bw_get_image_link( $post->ID );
       alink( null, $permalink , $thumbnail, null );  
     } else {
       e( $thumbnail );
     }    
-  }  
+  } else {
+    bw_trace2();
+  } 
 }
 
 /** 
@@ -363,20 +366,21 @@ function bw_format_nivo_screenshot( $fileurl, $atts ) {
   } else {
     $caption = null;
   }    
-  $image = retimage( null, $fileurl, $caption );
+  $image = retimage( null, $fileurl, $caption, null, null, kv("data-thumb", $fileurl) );
   e( $image );
 }
 
 /**
  * Enqueue the debug script if needed otherwise enqueue the minified (packed) one
+ * @param string $version - must be 31 or 271
 */
-function bw_nivo_enqueue_script( ) {
+function bw_nivo_enqueue_script( $version ) {
   if ( defined('SCRIPT_DEBUG' ) && SCRIPT_DEBUG == true) {
-    $script = 'jquery.nivo.slider.js';
+    $script = "jquery.nivo.slider-$version.js";
   } else {
-    $script = 'jquery.nivo.slider.pack.js'; 
+    $script = "jquery.nivo.slider-$version.pack.js"; 
   } 
-  wp_enqueue_script( 'nivo-slider-js', plugin_dir_url( __FILE__) . $script, array( 'jquery') );
+  wp_enqueue_script( "nivo-slider-$version-js", plugin_dir_url( __FILE__) . $script, array( 'jquery') );
 }
 
 /**
@@ -391,7 +395,23 @@ function bw_slider_id() {
   $bw_slider_count++;
   return( $bw_slider_count );
 }
-
+ 
+/** 
+ * Return the required nivo slider jQuery version for the selected theme
+ * 
+ * @param string $theme - theme name
+ * 2.7.1 versions are: orman, pascal, default271 and oik271
+ * 3.1 versions are: default, bar, dark, light, oik AND anything else
+ */
+function bw_nivo_version( $theme ) { 
+  static $versions = array( "default271" => "271" 
+                          , "oik271" => "271"
+                          , "orman" => "271"
+                          , "pascal" => "271" 
+                          );
+  $version = bw_array_get( $versions, $theme, "31" );
+  return( $version );
+}
   
 /**
  * Implement a Nivo slider for attachments or other post types
@@ -426,14 +446,27 @@ function bw_nivo_slider( $atts=null ) {
   }  
   if ( $posts ) {
     wp_enqueue_style( "nivo${theme}", plugin_dir_url( __FILE__). "themes/${theme}/${theme}.css" ); 
-    wp_enqueue_style( 'nivoCSS', plugin_dir_url( __FILE__). 'nivo-slider.css' ); 
-    bw_nivo_enqueue_script();
+    $version = bw_nivo_version( $theme );
+    wp_enqueue_style( "nivoCSS-$version", plugin_dir_url( __FILE__). "nivo-slider-$version.css" ); 
+    bw_nivo_enqueue_script( $version );
     $slider_id = bw_slider_id();
     //e( '<script type="text/javascript">jQuery(window).load(function() {  jQuery(\'#slider-'. $slider_id. '\').nivoSlider(); });</script>' );
-    bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( get_option( 'bw_nivo_slider' ) ), true );
+    if ( $version == "271" ) {
+      bw_jquery( "#slider-$slider_id", "nivoSlider271", bw_jkv( get_option( 'bw_nivo_slider' ) ), true );
+    } else { 
+      //bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( get_option( 'bw_nivo_slider' ) ), true );
+      $options = get_option( 'bw_nivo_slider' );
+      $thumbs = bw_array_get( $atts, "thumbs", null );
+      if ( $thumbs !== null ) {
+        $thumbs = bw_validate_torf( $thumbs );
+        $options['controlNavThumbs'] = $thumbs;   
+        bw_trace2( $options, "options" );   
+      }  
+      bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( $options ), true );
+    }  
     if ( bw_validate_torf( $atts['link'] ) ) {
       $oik_nc_script = 'jquery.oik-nc-click.js';  
-      wp_enqueue_script( 'oik-nc-click.js', plugin_dir_url( __FILE__) . $oik_nc_script, array( 'nivo-slider-js') ); 
+      wp_enqueue_script( 'oik-nc-click.js', plugin_dir_url( __FILE__) . $oik_nc_script, array( "nivo-slider-$version-js" ) ); 
       //e( '<script type="text/javascript">jQuery(window).load(function() {  jQuery(\'#slider-'. $slider_id. '\').oikNCClick(); });</script>' );
       bw_jquery( "#slider-$slider_id", "oikNCClick", null, true );
     }  
@@ -473,13 +506,14 @@ function _sc_thumbnail_full() {
 function nivo__syntax( $shortcode='nivo' ) {
   
   $nivo_syntax = array( "post_type" => bw_skv( "attachment", "<i>post_type</i>", "Post type to display" )
-                 , "theme" => bw_skv( "default", "orman|pascal|oik", "Theme for the slideshow" )
+                 , "theme" => bw_skv( "default", "bar|dark|light|orman|pascal|oik271|default271", "Theme for the slideshow" )
                  , "class" => bw_skv( "", "<i>classes</i>", "CSS classes" )
                  , "link" => bw_skv( "y", "n", "Link the images to the target post/page" )
                  , "caption" => bw_skv( "y", "n", "Display the image title as the caption" )
                  , "ribbon" => bw_skv( "y", "n", "Display the ribbon, if the theme supports it" )
                  );
   $syntax = array_merge( $nivo_syntax, _sc_thumbnail_full() );
+  $syntax += array( "thumbs" => bw_skv( "", "n|y", "Thumbnail navigation" ));
   $syntax = array_merge( $syntax, _sc_posts() );
   $syntax = array_merge( $syntax, $nivo_syntax ); // Re-apply the post_type values for this shortcode
   return( $syntax );
@@ -493,7 +527,7 @@ function nivo__syntax( $shortcode='nivo' ) {
  * An interesting side effect.
 */ 
 function nivo__example( $shortcode='nivo' ) {
-  $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" class=span-14 caption=n link=n';
+  $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" caption=n link=n';
   $text = "Slideshow of the screenshots from oik-nivo-slider, using the oik theme and the current settings. ";
   //$text .= "The CSS class w70pc causes the slideshow to have a width of 70%. bd-550 sets the min-depth to 550px." ;
   bw_invoke_shortcode( $shortcode, $atts, $text  );
@@ -504,7 +538,7 @@ function nivo__example( $shortcode='nivo' ) {
  * Produce the code snippet for the nivo shortcode as used in the example
 */ 
 function nivo__snippet( $shortcode='nivo', $atts=null ) {
-  $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" class=span-14 caption=n link=n';
+  $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" caption=n link=n';
   _sc__snippet( $shortcode, $atts );
 }
 

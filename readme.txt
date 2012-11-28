@@ -1,17 +1,21 @@
 === oik-nivo-slider ===
 Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
-Tags: shortcode, Nivo, slider, [nivo], oik, jQuery, slideshow, posts, pages, attachments
+Tags:  responsive, Nivo, slider, shortcode, [nivo], oik, jQuery, slideshow, posts, pages, attachments
 Requires at least: 3.3
-Tested up to: 3.4.1
+Tested up to: 3.4.2
 Stable tag: 1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-[nivo] shortcode for the jQuery "Nivo slider" for posts, pages, attachments and custom post types using oik
+[nivo] shortcode for the responsive jQuery "Nivo slider" for posts, pages, attachments and custom post types using oik
 
 == Description ==
-The [nivo] shortcode implements the jQuery Nivo slider, which is considered by some to be "The Most Awesome jQuery Image Slider". 
+The [nivo] shortcode implements the jQuery Nivo slider, which is considered by some to be "The Most Awesome jQuery Image Slider"
+and is reputed to be the world's most popular jQuery image slider.
+
+The oik-nivo-slider plugin supports fully responsive sliders using the latest jQuery nivo slider code (version 3.1)
+It also supports sliders using the previous version - jQuery nivo 2.7.1
 
 The [nivo] shortcode can be used to display a variety of slideshows with/without links.   
 It can be used to direct the user to any post/page/custom content type.
@@ -25,7 +29,7 @@ Download oik from
 
 [Find out more](http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/)
 
-See also [dev 7 studios](http://nivo.dev7studios.com) for more information about the jQuery code.
+See also [dev 7 studios](http://nivo.dev7studios.com) for more information about the jQuery Nivo code.
 
 
 == Installation ==
@@ -57,12 +61,13 @@ The most common fixes to this problem are:
 The basic parameters that control the display of the Nivo slider are:
 
 `[nivo
-  theme="default|orman|pascal|oik - Theme for the slideshow"
+  theme="default|bar|dark|light|oik|orman|pascal|default271|oik271 - Theme for the slideshow"
   link="y|n - Link the images to the target post/page"
   caption="y|n - Display the image title as the caption"
-  ribbon="y|n - Display the ribbon, if the theme supports it"
+  ribbon="y|n - Display the ribbon, if the theme supports it (version 271 only)"
   thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
   class="|classes - CSS classes"
+  thumbs="|n|y - thumbnail navigation"
 ]`
 
 = How do I make the images link to my content? = 
@@ -77,12 +82,13 @@ Use the post_type parameter to specify the content type and either the post_pare
 = What is the FULL syntax for the [nivo] shortcode = 
 `[nivo
   post_type="attachment|post_type - Post type to display"
-  theme="default|orman|pascal|oik - Theme for the slideshow"
+  theme="default|bar|dark|light|oik|orman|pascal|default271|oik271 - Theme for the slideshow"
   class="|classes - CSS classes"
   link="y|n - Link the images to the target post/page"
   caption="y|n - Display the image title as the caption"
   ribbon="y|n - Display the ribbon, if the theme supports it"
   thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
+  thumbs="|n|y - thumbnail navigation"
   numberposts="5|numeric - number to return"
   offset="0|numeric - offset from which to start"
   category="|category-id - category IDs (comma separated)"
@@ -117,7 +123,6 @@ when there is an attached image; it won't find the featured image. As a workarou
 OR ensure that the image you want to display is attached to the post
 OR exclude the post from the list ( exclude=id1,id2 )
 
-
 = Do I need to make my images the same size? =
 YES. There is no auto cropping. 
 Remember: You can use Add Media Edit Image after you have uploaded your files. This can be used to scale and crop images.
@@ -138,38 +143,47 @@ Not directly. In order to get the shortcode to expand you need to wrap it in som
 One way of achieving this is to code
 `<?php echo do_shortcode('[nivo post_type=attachment post_parent=487 caption=n]'); ?>`
 
-
-= Which version of the jQuery Nivo slider code is needed? = 
-The plugin includes the FREE jQuery Nivo slider v2.7.1 from http://nivo.dev7studios.com/features/
-excluding the demo files.
-There are some minor additions to the nivo-slider.css file to support additional function provided by the oik Nivo slider
-
+= Which version of the jQuery Nivo slider code is needed? =
+The plugin includes TWO versions of the FREE jQuery Nivo slider
+* Version 3.1 is the latest version from Dev 7 studios, producing responsive slideshows.
+* oik-nivo-slider continues to support the themes for version 2.7.1: default271, orman, pascal and oik271
+ 
 = Does it support version 3.1 of the jQuery Nivo slider? =
-This is planned for a future version. 
+YES... from oik-nivo-slider version 1.7
 
+= Does it support thumbnail navigation? =
+YES... from oik-nivo-slider version 1.7 with oik 1.17 or higher
+Thumbnail navigation is supported for version 3.1 of the nivo jQuery code.
 
 = Which version of jQuery does it use? =
-It uses the jQuery library provided by WordPress. In WordPress 3.3.1 it was 1.7.1. For WordPress 3.4.1 it is 1.7.2
+It uses the jQuery library provided by WordPress. In WordPress 3.3.1 it was 1.7.1. For WordPress 3.4.1/3.4.2 it is 1.7.2
 
 = What's the difference between this plugin and Nivo's WordPress plugin =
 I have not tried Nivo's plugin. But you can read about it and watch a video here
 http://nivo.dev7studios.com/features/#wordpress
 
-
 = Can you tell me more? =
 YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/)
 
-
 == Screenshots ==
-1. Nivo slider with the default theme. [nivo]
-2. Nivo slider with the Orman theme [nivo theme=orman]
-3. Nivo slider with the Pascal theme and NO captions [nivo theme=pascal caption=n]
-4. Nivo slider with the oik theme - not hovered over [nivo theme=oik]
-5. Nivo slider with the oik theme - image hovered over
-6. Nivo slider with the oik theme - caption hovered over
-7. oik Nivo slider options page
+1. Nivo slider - default theme [nivo]
+2. Nivo slider - bar theme [nivo theme=bar]
+3. Nivo slider - dark theme [nivo theme=dark]
+4. Nivo slider - light theme [nivo theme=light]
+5. Nivo slider - oik theme - not hovered over [nivo theme=oik ] 
+6. Nivo slider - oik theme - image hovered over
+7. Nivo slider - oik theme - caption hovered over
+8. Nivo slider - default271 theme [nivo theme=default271]
+9. Nivo slider - orman theme [nivo theme=orman]
+10. Nivo slider - pascal theme [nivo theme=pascal]
+11. Nivo slider - oik271 theme [nivo theme=oik271]
+12. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.7 = 
+* Requires oik v1.17(.1122.1709) for thumbnail navigation support
+* Requires oik v1.17.1128 for custom boxCols or boxRows settings
+
 = 1.6 =
 * Version 1.6 should be used with oik version 1.16.
 
@@ -197,6 +211,25 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.7 = 
+* Changed: Improved CSS to allow for themes that set margins on <img> tags
+* Noted: bug causing small images to appear
+
+= 1.6.1128 =
+* Added: Slider transitions: "slideInLeft" and "slideInRight". 
+* Fixed: Bug preventing boxRain transition from completing when boxCols or boxRows values set in Nivo settings
+
+= 1.6.1122.1709 =
+* Added: controlNavThumbs option in Nivo settings. For Nivo 3.1
+* Added: Also supports thumbs=y|n parameter to override controlNavThumbs
+
+= 1.6.1122 =
+* Added: Now supports nivo version 3.1 AND nivo 2.7.1. You can mix and match slider themes on a page
+* Changed: Default theme is still called default. If you want the default theme from nivo 2.7.1 use default271
+ 
+= 1.6.1121 = 
+* Fixed: Now supports images with only one size - -as in  http://herbmiller.me/about/herb-miller-portraits
+
 = 1.6 =
 * Fixed: Added support for the thumbnail parameter. Required when the full size image is much larger than the slider size.  
 

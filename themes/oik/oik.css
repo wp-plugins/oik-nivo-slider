@@ -1,17 +1,17 @@
 /*
-Skin Name: Nivo Slider OIK theme
+Skin Name: Nivo Slider OIK theme for nivo slider v3.1
 Skin URI: http://www.oik-plugins.com
-Skin Type: flexible
 Description: The OIK skin for the Nivo Slider.
 Version: 1.0
 Author: Herb Miller of bobbing wide
 Author URI: http://www.oik-plugins.com
+Supports Thumbs: true
 */
 
 .theme-oik .nivoSlider {
 	position:relative;
 	background:#fff url(loading.gif) no-repeat 50% 50%;
-    margin-bottom:50px;
+    margin-bottom:10px;
     -webkit-box-shadow: 0px 1px 5px 0px #4a4a4a;
     -moz-box-shadow: 0px 1px 5px 0px #4a4a4a;
     box-shadow: 0px 1px 5px 0px #4a4a4a;
@@ -28,20 +28,17 @@ Author URI: http://www.oik-plugins.com
 }
 
 .theme-oik .nivo-controlNav {
-	position:absolute;
-	left:50%;
-	bottom:-42px;
-    margin-left:-40px; /* Tweak this to center bullets */
+	text-align: center;
+	padding: 20px 0;
 }
 .theme-oik .nivo-controlNav a {
-	display:block;
+	display:inline-block;
 	width:22px;
 	height:22px;
 	background:url(bullets.png) no-repeat;
 	text-indent:-9999px;
 	border:0;
-	margin-right:3px;
-	float:left;
+	margin: 0 2px;
 }
 .theme-oik .nivo-controlNav a.active {
 	background-position:0 -22px;
@@ -54,13 +51,45 @@ Author URI: http://www.oik-plugins.com
 	background:url(arrows.png) no-repeat;
 	text-indent:-9999px;
 	border:0;
+	opacity: 0;
+	-webkit-transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    -o-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
 }
+.theme-oik:hover .nivo-directionNav a { opacity: 1; }
 .theme-oik a.nivo-nextNav {
 	background-position:-30px 0;
 	right:15px;
 }
 .theme-oik a.nivo-prevNav {
 	left:15px;
+}
+
+.theme-oik .nivo-caption {
+    font-family: Helvetica, Arial, sans-serif;
+}
+.theme-oik .nivo-caption a {
+    color:#fff;
+    border-bottom:1px dotted #fff;
+}
+.theme-oik .nivo-caption a:hover {
+    color:#fff;
+}
+
+.theme-oik .nivo-controlNav.nivo-thumbs-enabled {
+	width: 100%;
+}
+.theme-oik .nivo-controlNav.nivo-thumbs-enabled a {
+	width: auto;
+	height: auto;
+	background: none;
+	margin-bottom: 5px;
+}
+.theme-oik .nivo-controlNav.nivo-thumbs-enabled img {
+	display: block;
+	width: 120px;
+	height: auto;
 }
 
 /* You can't turn the caption off using CSS display:none as the jQuery overrides it. */
