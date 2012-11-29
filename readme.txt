@@ -4,7 +4,7 @@ Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags:  responsive, Nivo, slider, shortcode, [nivo], oik, jQuery, slideshow, posts, pages, attachments
 Requires at least: 3.3
 Tested up to: 3.4.2
-Stable tag: 1.6
+Stable tag: 1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,8 +209,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 
 == Upgrade Notice ==
 = 1.7 = 
-* Requires oik v1.17(.1122.1709) for thumbnail navigation support
-* Requires oik v1.17.1128 for custom boxCols or boxRows settings
+* Version 1.7 requires oik v1.16 or higher
+* For thumbnail navigation support you will need oik v1.17(.1122.1709)
+* For custom values for boxCols or boxRows for box transition effects you will need oik v1.17(.1128)
 
 = 1.6 =
 * Version 1.6 should be used with oik version 1.16.
@@ -240,22 +241,13 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 
 == Changelog ==
 = 1.7 = 
-* Changed: Improved CSS to allow for themes that set margins on <img> tags
-* Noted: bug causing small images to appear
-
-= 1.6.1128 =
+* Added: Now supports nivo version 3.1 AND nivo 2.7.1. You can mix and match slider themes on a page
 * Added: Slider transitions: "slideInLeft" and "slideInRight". 
-* Fixed: Bug preventing boxRain transition from completing when boxCols or boxRows values set in Nivo settings. Depends on oik v1.17.1128
-
-= 1.6.1122.1709 =
 * Added: controlNavThumbs option in Nivo settings. For Nivo 3.1
 * Added: Also supports thumbs=y|n parameter to override controlNavThumbs
-
-= 1.6.1122 =
-* Added: Now supports nivo version 3.1 AND nivo 2.7.1. You can mix and match slider themes on a page
 * Changed: Default theme is still called default. If you want the default theme from nivo 2.7.1 use default271
- 
-= 1.6.1121 = 
+* Changed: Improved CSS to allow for themes that set margins on <img> tags
+* Fixed: Bug preventing boxRain transition from completing when boxCols or boxRows values set in Nivo settings. Depends on oik v1.17(.1128)
 * Fixed: Now supports images with only one size - as in  http://herbmiller.me/about/herb-miller-portraits
 
 = 1.6 =
