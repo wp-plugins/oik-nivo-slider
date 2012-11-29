@@ -14,13 +14,33 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 The [nivo] shortcode implements the jQuery Nivo slider, which is considered by some to be "The Most Awesome jQuery Image Slider"
 and is reputed to be the world's most popular jQuery image slider.
 
-The oik-nivo-slider plugin supports fully responsive sliders using the latest jQuery nivo slider code (version 3.1)
-It also supports sliders using the previous version - jQuery nivo 2.7.1
+= Features of jQuery Nivo 3.1 =
 
-The [nivo] shortcode can be used to display a variety of slideshows with/without links.   
-It can be used to direct the user to any post/page/custom content type.
+* Flexible slider
+* 16 transition effects
+* 4 responsive slider themes
+* Built in directional and control navigation
+* Thumbnail image navigation
 
-The [nivo] shortcode uses the oik plugin's shortcode API for *lazy smart* shortcodes.
+See also [dev 7 studios](http://nivo.dev7studios.com) for more information about the jQuery Nivo code.
+
+= Features of the oik nivo slider WordPress plugin =
+
+* [nivo] lazy smart shortcode
+* Displays attached images
+* Displays images attached to related content
+* Profile for nivo slider settings
+* Display slideshows with/without links
+* Display slideshows with/without captions
+* Supports custom links to your content
+* Supports jQuery Nivo 3.1 for responsive sliders
+* nivo slider can be put into any part of your website: content, header, footer and sidebar text widgets
+* 1 additional responsive slider theme
+* Supports jQuery Nivo 2.7.1 for backward compatibility
+* 4 additional themes for jQuery Nivo 2.7.1
+* Works with existing content, does not add its own custom post type
+* Uses the oik plugin's shortcode API for *lazy smart* shortcodes
+* The [nivo] shortcode is interchangeable with other oik shortcodes such as [bw_images], [bw_thumbs] or [bw_pages]
 
 Note: oik-nivo-slider is dependent upon the oik plugin. 
 You can activate it but it will not function correctly unless the pre-requisite version of oik is also activated.
@@ -28,9 +48,6 @@ Download oik from
 [oik download](http://wordpress.org/extend/plugins/oik/)
 
 [Find out more](http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/)
-
-See also [dev 7 studios](http://nivo.dev7studios.com) for more information about the jQuery Nivo code.
-
 
 == Installation ==
 1. Upload the contents of the oik-nivo-slider plugin to the `/wp-content/plugins/oik-nivo-slider' directory
@@ -53,9 +70,9 @@ You need to activate both the oik-nivo-slider plugin and the oik base plugin. Th
 = My images do not appear in the slider =
 The most common fixes to this problem are:
 
-* Upgrade your version of oik to 1.14 (or higher) 
 * Don't insert the images that you want in the slideshow into the page; just upload media and save changes.
 * The slider requires jQuery. Check that your theme files contain calls to wp_head() and wp_footer().
+
 
 = What are the parameters to the [nivo] shortcode? =
 The basic parameters that control the display of the Nivo slider are:
@@ -71,7 +88,18 @@ The basic parameters that control the display of the Nivo slider are:
 ]`
 
 = How do I make the images link to my content? = 
-Use the post_type parameter to specify the content type and either the post_parent parameter for hierarchical content types or category for posts or other selection criteria for other content types
+There are two methods.
+
+If your slide show is created from attached images then use the oik custom image link URL field in the Add Media dialog to set the target for the link.
+
+Alternatively build the slideshow dynamically from images attached to related content. 
+
+Use the post_type parameter to specify the content type and
+ 
+* either the post_parent parameter for hierarchical content types 
+* or category for posts 
+* or other selection criteria for other content types
+
 
 `[nivo
   post_type="post_type - Post type to display"
@@ -124,8 +152,8 @@ OR ensure that the image you want to display is attached to the post
 OR exclude the post from the list ( exclude=id1,id2 )
 
 = Do I need to make my images the same size? =
-YES. There is no auto cropping. 
-Remember: You can use Add Media Edit Image after you have uploaded your files. This can be used to scale and crop images.
+NO, not any more. 
+If you use any one of the five themes associated with jQuery Nivo version 3.1 then the images can be different sizes.
 
 = Can I control the slideshow transitions? =
 YES. Use the Nivo slider settings page.
@@ -144,8 +172,8 @@ One way of achieving this is to code
 `<?php echo do_shortcode('[nivo post_type=attachment post_parent=487 caption=n]'); ?>`
 
 = Which version of the jQuery Nivo slider code is needed? =
-The plugin includes TWO versions of the FREE jQuery Nivo slider
-* Version 3.1 is the latest version from Dev 7 studios, producing responsive slideshows.
+The plugin includes TWO versions of the FREE jQuery Nivo slider from Dev7 Studios
+* Version 3.1 is the latest version producing responsive slideshows.
 * oik-nivo-slider continues to support the themes for version 2.7.1: default271, orman, pascal and oik271
  
 = Does it support version 3.1 of the jQuery Nivo slider? =
@@ -217,7 +245,7 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 
 = 1.6.1128 =
 * Added: Slider transitions: "slideInLeft" and "slideInRight". 
-* Fixed: Bug preventing boxRain transition from completing when boxCols or boxRows values set in Nivo settings
+* Fixed: Bug preventing boxRain transition from completing when boxCols or boxRows values set in Nivo settings. Depends on oik v1.17.1128
 
 = 1.6.1122.1709 =
 * Added: controlNavThumbs option in Nivo settings. For Nivo 3.1
@@ -228,7 +256,7 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * Changed: Default theme is still called default. If you want the default theme from nivo 2.7.1 use default271
  
 = 1.6.1121 = 
-* Fixed: Now supports images with only one size - -as in  http://herbmiller.me/about/herb-miller-portraits
+* Fixed: Now supports images with only one size - as in  http://herbmiller.me/about/herb-miller-portraits
 
 = 1.6 =
 * Fixed: Added support for the thumbnail parameter. Required when the full size image is much larger than the slider size.  
