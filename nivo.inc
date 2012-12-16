@@ -412,6 +412,27 @@ function bw_nivo_version( $theme ) {
   $version = bw_array_get( $versions, $theme, "31" );
   return( $version );
 }
+
+
+/**
+ * Override the profile options with parameter settings with the same name
+ * 
+ * Use this routine to override options such as:
+ * effect: fade, fold, slideInLeft, etc
+ * 
+ */
+function bw_override_options( $options, $options_field, $atts, $atts_field, $field_validation=null ) {
+  $value = bw_array_get( $atts, $atts_field, null ); 
+  if ( $value ) {
+    if ( is_callable( $field_validation ) ) {
+      $value = $field_validation( $value );
+    }  
+  } 
+  if ( $value ) {
+    $options[$options_field] = $value ;
+  }    
+  return( $options ); 
+}
   
 /**
  * Implement a Nivo slider for attachments or other post types
@@ -456,12 +477,9 @@ function bw_nivo_slider( $atts=null ) {
     } else { 
       //bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( get_option( 'bw_nivo_slider' ) ), true );
       $options = get_option( 'bw_nivo_slider' );
-      $thumbs = bw_array_get( $atts, "thumbs", null );
-      if ( $thumbs !== null ) {
-        $thumbs = bw_validate_torf( $thumbs );
-        $options['controlNavThumbs'] = $thumbs;   
-        bw_trace2( $options, "options" );   
-      }  
+      $options = bw_override_options( $options, "controlNavThumbs", $atts, "thumbs", "bw_validate_torf" ); 
+      $options = bw_override_options( $options, "effect", $atts, "effect", "bw_filter_transition_effect" ); 
+      //bw_trace2( $options, "options" );   
       bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( $options ), true );
     }  
     if ( bw_validate_torf( $atts['link'] ) ) {
@@ -504,7 +522,6 @@ function _sc_thumbnail_full() {
  * oik shortcode syntax for [nivo]
 */ 
 function nivo__syntax( $shortcode='nivo' ) {
-  
   $nivo_syntax = array( "post_type" => bw_skv( "attachment", "<i>post_type</i>", "Post type to display" )
                  , "theme" => bw_skv( "default", "bar|dark|light|orman|pascal|oik271|default271", "Theme for the slideshow" )
                  , "class" => bw_skv( "", "<i>classes</i>", "CSS classes" )
@@ -514,6 +531,7 @@ function nivo__syntax( $shortcode='nivo' ) {
                  );
   $syntax = array_merge( $nivo_syntax, _sc_thumbnail_full() );
   $syntax += array( "thumbs" => bw_skv( "", "n|y", "Thumbnail navigation" ));
+  $syntax += array( "effect" => bw_skv( "", "random|sliceDownRight|sliceDownLeft|sliceUpRight|sliceUpLeft|sliceUpDown|sliceUpDownLeft|fold|fade|boxRandom|boxRain|boxRainReverse|boxRainGrow|boxRainGrowReverse|slideInLeft|slideInRight", "transition effect" )
   $syntax = array_merge( $syntax, _sc_posts() );
   $syntax = array_merge( $syntax, $nivo_syntax ); // Re-apply the post_type values for this shortcode
   return( $syntax );

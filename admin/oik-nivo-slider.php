@@ -67,7 +67,7 @@ function oik_nivo_slider_options() {
                 'boxRandom','boxRain','boxRainReverse','boxRainGrow','boxRainGrowReverse', 'slideInLeft', 'slideInRight' );
   $effect_options_assoc = bw_assoc( $effect_options );                
                 
-  bw_select_arr( $option, "Effect", $options, 'effect', array( "#options" => $effect_options_assoc ) );
+  bw_select_arr( $option, "Effect (effect=<i>effect</i>)", $options, 'effect', array( "#options" => $effect_options_assoc ) );
   
   bw_textfield_arr( $option, "Slices", $options, 'slices', 2 );
   bw_textfield_arr( $option, "Box cols", $options, 'boxCols', 2 );
