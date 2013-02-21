@@ -4,16 +4,14 @@ Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags:  responsive, Nivo, slider, shortcode, [nivo], oik, jQuery, slideshow, posts, pages, attachments
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.7
+Stable tag: 1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 [nivo] shortcode for the responsive jQuery "Nivo slider" for posts, pages, attachments and custom post types using oik
-Now supports a "special" post type of "nggallery". 
 
 == Description ==
-The [nivo] shortcode implements the jQuery Nivo slider, which is considered by some to be "The Most Awesome jQuery Image Slider"
-and is reputed to be the world's most popular jQuery image slider.
+[nivo] shortcode for the jQuery Nivo slider; "The Most Awesome jQuery Image Slider"; reputed to be the world's most popular jQuery image slider.
 
 = Features of jQuery Nivo 3.1 =
 
@@ -43,7 +41,7 @@ See also [dev 7 studios](http://nivo.dev7studios.com) for more information about
 * Works with existing content, does not add its own custom post type
 * Uses the oik plugin's shortcode API for *lazy smart* shortcodes
 * The [nivo] shortcode is interchangeable with other oik shortcodes such as [bw_images], [bw_thumbs] or [bw_pages]
-* Supports display of images from a NextGEN gallery
+* Supports display of images from a NextGEN gallery, using a "special post type" of nggallery.
 * Supports display of a plugin's screenshots
 
 Note: oik-nivo-slider is dependent upon the oik plugin. 
