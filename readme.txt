@@ -9,6 +9,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 [nivo] shortcode for the responsive jQuery "Nivo slider" for posts, pages, attachments and custom post types using oik
+Now supports a "special" post type of "nggallery". 
 
 == Description ==
 The [nivo] shortcode implements the jQuery Nivo slider, which is considered by some to be "The Most Awesome jQuery Image Slider"
@@ -42,6 +43,8 @@ See also [dev 7 studios](http://nivo.dev7studios.com) for more information about
 * Works with existing content, does not add its own custom post type
 * Uses the oik plugin's shortcode API for *lazy smart* shortcodes
 * The [nivo] shortcode is interchangeable with other oik shortcodes such as [bw_images], [bw_thumbs] or [bw_pages]
+* Supports display of images from a NextGEN gallery
+* Supports display of a plugin's screenshots
 
 Note: oik-nivo-slider is dependent upon the oik plugin. 
 You can activate it but it will not function correctly unless the pre-requisite version of oik is also activated.
@@ -111,7 +114,7 @@ Use the post_type parameter to specify the content type and
 
 = What is the FULL syntax for the [nivo] shortcode = 
 `[nivo
-  post_type="attachment|post_type - Post type to display"
+  post_type="attachment|post_type|special:value - Post type to display"
   theme="default|bar|dark|light|oik|orman|pascal|default271|oik271 - Theme for the slideshow"
   class="|classes - CSS classes"
   link="y|n - Link the images to the target post/page"
@@ -157,6 +160,7 @@ OR exclude the post from the list ( exclude=id1,id2 )
 = Do I need to make my images the same size? =
 NO, not any more. 
 If you use any one of the five themes associated with jQuery Nivo version 3.1 then the images can be different sizes.
+Warning: you might not like the results though.
 
 = Can I control the slideshow transitions? =
 YES. Use the Nivo slider settings page.
@@ -187,7 +191,7 @@ YES... from oik-nivo-slider version 1.7 with oik 1.17 or higher
 Thumbnail navigation is supported for version 3.1 of the nivo jQuery code.
 
 = Can I choose the effect per slider? =
-YES... from oik-nivo-slider version 1.7.1216. Use the effect= parameter e.g. [nivo effect=boxRain]
+YES... Use the effect= parameter e.g. [nivo effect=boxRain]
 
 = Which version of jQuery does it use? =
 It uses the jQuery library provided by WordPress. In WordPress 3.3.1 it was 1.7.1. For WordPress 3.4.1/3.4.2 it is 1.7.2
@@ -195,6 +199,22 @@ It uses the jQuery library provided by WordPress. In WordPress 3.3.1 it was 1.7.
 = What's the difference between this plugin and Nivo's WordPress plugin =
 I have not tried Nivo's plugin. But you can read about it and watch a video here
 http://nivo.dev7studios.com/features/#wordpress
+
+= Does it support NextGEN galleries? =
+YES. Basic support for images in NextGEN galleries has been added in version 1.18
+You need to use a special post_type parameter 
+e.g. 
+[nivo post_type=nggallery:1]
+
+* The special post_type is nggallery
+* Then you need a colon (:)
+* Then the ID of the gallery
+
+= What other special post types are there? =
+oik-nivo-slider has built in support for:
+
+* nggallery:id - display the images from a NextGEN gallery 
+* screenshot:plugin_name - display the screenshots for an installed plugin
 
 = Can you tell me more? =
 YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slider/)
@@ -252,6 +272,7 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 
 == Changelog ==
 = 1.8 = 
+* Added: Support for displaying images from NextGEN galleries using post_type=nggallery:n where n= gallery ID
 * Changed: Updated to use the latest dependency checking logic
 * Tested: with WordPress 3.5.1 
 * Changed: Improved some documentation comments

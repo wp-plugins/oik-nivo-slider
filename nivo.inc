@@ -344,14 +344,42 @@ function bw_format_nivo_attachment( $post, $atts ) {
   } 
 }
 
+/**
+ * Get special post types
+ * 
+ * @param array $atts - array of shortcode parameters
+ * @return array $posts - array of "posts" 
+ *
+ * Initially the only special post_type supported was "screenshot"
+ * This allowed oik-nivo-slider to display its own screen shot files: screenshot-n.png
+ * Now we're looking at supporting NextGEN: ngg_pictures, ngg_gallery or ngg_album
+ *
+ */
+function bw_get_special_post_type( $atts ) {
+  $explode = explode( ':', $atts['post_type'] );
+  $type = bw_array_get( $explode, 0, "screenshot" );
+  $funcname = "bw_get_spt_$type"; 
+  //$funcname = bw_funcname( "bw_get_spt_", $type );
+  if ( function_exists( $funcname ) ) {
+    $posts = $funcname( $atts ); 
+  } else { 
+    e( "Unsupported special post_type: $type" );
+    $posts = null;
+  }
+  return( $posts );
+}
+
 /** 
  * Load screenshot images for the selected plugin (or other plugin files)
  * 
  * e.g [nivo post_type='screenshot:oik-nivo-slider'] or [nivo post_type='screenshot:oik'] 
+ * This solution assumes that the screenshots are part of the plugin 
+ * It does not load the files from the wordpress.org repository - where they may be stored in the assets folder
+ * 
  * @param array $atts - array of shortcode parameters
  *
 */    
-function bw_get_screenshots( $atts ) { 
+function bw_get_spt_screenshot( $atts ) { 
   $explode = explode( ':', $atts['post_type'] );
   $type = bw_array_get( $explode, 0, "screenshot" );
   $plugin = bw_array_get( $explode, 1, "oik-nivo-slider" );
@@ -359,6 +387,25 @@ function bw_get_screenshots( $atts ) {
   $files = glob( $path . "*" );
   $urls = bw_file_to_url( $files, $atts );
   return( $urls );
+}
+
+/**
+ * Get posts for the NextGen gallery
+ *
+ * Developed using NextGEN version 1.9.2 
+ */
+function bw_get_spt_nggallery( $atts ) {
+  $explode = explode( ':', $atts['post_type'] );
+  $type = bw_array_get( $explode, 0, "nggallery" );
+  $gallery = bw_array_get( $explode, 1, 1 );
+  if ( class_exists( "nggdb" ) ) {
+    $images = nggdb::get_gallery( $gallery );
+    bw_trace2( $images );
+  } else { 
+    $images = null;
+    e( "NextGEN does not appear to be activated" ); 
+  }
+  return( $images ); 
 }
 
 /**
@@ -374,6 +421,104 @@ function bw_format_nivo_screenshot( $fileurl, $atts ) {
     $caption = null;
   }    
   $image = retimage( null, $fileurl, $caption, null, null, kv("data-thumb", $fileurl) );
+  e( $image );
+}
+
+/**
+ * Format a NextGEN gallery image for the nivo slider
+ *
+ * @param object $nggImage - a NextGEN gallery nggImage object
+ * @param array $atts - array of shortcode parameters
+ *
+ * The nggImage object already contains the fields we need in order to display an image: imageURL and description
+ * Don't yet know the requirements for using other data. So currently just display without any links
+ *
+ * 
+ 
+    [14] => nggImage Object
+        (
+            [errmsg] => 
+            [error] => 
+            [imageURL] => http://qw/wordpress/wp-content/gallery/nextgen-gallery/RCGC-7th-green-cherry-blossom-972x300.jpg
+            [thumbURL] => http://qw/wordpress/wp-content/gallery/nextgen-gallery/thumbs/thumbs_RCGC-7th-green-cherry-blossom-972x300.jpg
+            [imagePath] => C:/apache/htdocs/wordpress/wp-content/gallery/nextgen-gallery/RCGC-7th-green-cherry-blossom-972x300.jpg
+            [thumbPath] => C:/apache/htdocs/wordpress/wp-content/gallery/nextgen-gallery/thumbs/thumbs_RCGC-7th-green-cherry-blossom-972x300.jpg
+            [href] => 
+<a href="http://qw/wordpress/wp-content/gallery/nextgen-gallery/RCGC-7th-green-cherry-blossom-972x300.jpg" title="Here is a description for the cherry blossom" class="thickbox" rel="nextgen-gallery">
+	<img alt="RCGC-7th-green-cherry-blossom-972x300" src="http://qw/wordpress/wp-content/gallery/nextgen-gallery/thumbs/thumbs_RCGC-7th-green-cherry-blossom-972x300.jpg"/>
+</a>
+
+            [thumbPrefix] => thumbs_
+            [thumbFolder] => /thumbs/
+            [galleryid] => 1
+            [pid] => 14
+            [filename] => RCGC-7th-green-cherry-blossom-972x300.jpg
+            [description] => Here is a description for the cherry blossom
+            [alttext] => RCGC-7th-green-cherry-blossom-972x300
+            [imagedate] => 2011-04-20 01:01:42
+            [exclude] => 0
+            [thumbcode] => class="thickbox" rel="nextgen-gallery"
+            [name] => nextgen-gallery
+            [path] => wp-content/gallery/nextgen-gallery
+            [title] => NextGen gallery
+            [pageid] => 3091
+            [previewpic] => 18
+            [permalink] => 
+            [image_slug] => rcgc-7th-green-cherry-blossom-972x300-2
+            [post_id] => 0
+            [sortorder] => 0
+            [meta_data] => Array
+                (
+                    [0] => 
+                    [aperture] => F 9
+                    [credit] => 
+                    [camera] => DSC-W80
+                    [caption] => 
+                    [created_timestamp] => April 20, 2011 1:01 am
+                    [copyright] => 
+                    [focal_length] => 6.6 mm
+                    [iso] => 125
+                    [shutter_speed] => 1/130 sec
+                    [flash] => Not fired
+                    [title] =>                                
+                    [keywords] => 
+                    [width] => 972
+                    [height] => 300
+                    [saved] => 1
+                    [thumbnail] => Array
+                        (
+                            [width] => 100
+                            [height] => 75
+                        )
+
+                )
+
+            [gid] => 1
+            [slug] => nextgen-gallery
+            [galdesc] => 
+            [author] => 1
+            [imageHTML] => 
+<a href="http://qw/wordpress/wp-content/gallery/nextgen-gallery/RCGC-7th-green-cherry-blossom-972x300.jpg" title="Here is a description for the cherry blossom" class="thickbox" rel="nextgen-gallery">
+	<img alt="RCGC-7th-green-cherry-blossom-972x300" src="http://qw/wordpress/wp-content/gallery/nextgen-gallery/RCGC-7th-green-cherry-blossom-972x300.jpg"/>
+</a>
+
+            [thumbHTML] => 
+<a href="http://qw/wordpress/wp-content/gallery/nextgen-gallery/RCGC-7th-green-cherry-blossom-972x300.jpg" title="Here is a description for the cherry blossom" class="thickbox" rel="nextgen-gallery">
+	<img alt="RCGC-7th-green-cherry-blossom-972x300" src="http://qw/wordpress/wp-content/gallery/nextgen-gallery/thumbs/thumbs_RCGC-7th-green-cherry-blossom-972x300.jpg"/>
+</a>
+
+        )
+
+ */
+function bw_format_nivo_nggallery( $nggImage, $atts ) {
+  if ( bw_validate_torf( $atts['caption'] ) ) {
+    $caption = $nggImage->description;
+  } else {
+    $caption = null;
+  } 
+  $fileurl = $nggImage->imageURL;
+  $thumburl = $nggImage->thumbURL;   
+  $image = retimage( null, $fileurl, $caption, null, null, kv("data-thumb", $thumburl ) );
   e( $image );
 }
 
@@ -471,7 +616,7 @@ function bw_nivo_slider( $atts=null ) {
   oik_require( "shortcodes/oik-attachments.php" );
   $pos = strpos( $atts['post_type'], ':' ); 
   if ( $pos != FALSE ) {  
-    $posts = bw_get_screenshots( $atts );
+    $posts = bw_get_special_post_type( $atts );
     $atts['post_type'] = substr( $atts['post_type'], 0, $pos ); 
   } else {
     $posts = bw_get_posts( $atts );
