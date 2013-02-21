@@ -1,9 +1,12 @@
-<?php // (C) Copyright Bobbing Wide 2012
+<?php // (C) Copyright Bobbing Wide 2012,2013
 /**
  * Format the Nivo output for posts which have attached images 
  * 
  * When the thumbnail size is "full" then this will only work when there is an attached image
  * It won't find the featured image. This is a limitation of bw_thumbnail() **?**
+ *
+ * @param post $post - a post object
+ * @param array $atts - array of shortcode parameters 
  * 
 */
 function bw_format_nivo( $post, $atts ) {
@@ -83,6 +86,7 @@ function bw_closer( $wanted, $best, $now ) {
 
 /**
  * Determine if this size is a better match than before? 
+ * 
  * Note: Best width and height start at 0
  * @param integer $sw - required width
  * @param integer $sh - required height
@@ -173,7 +177,7 @@ function bw_get_by_size( $sizes, $size ) {
 }
 
 /**
- * get best fitting image file name WITHOUT resizing
+ * Get best fitting image file name WITHOUT resizing
  * 
  * @param ID - post id of the image
  * @param mixed - size - either as a named size or array
@@ -306,7 +310,6 @@ function bw_get_attached_file_name( $post_id, $atts ) {
   return( $image );
 }
 
-
 /**
  * Format the Nivo output for attached images
  *
@@ -343,14 +346,15 @@ function bw_format_nivo_attachment( $post, $atts ) {
 
 /** 
  * Load screenshot images for the selected plugin (or other plugin files)
+ * 
  * e.g [nivo post_type='screenshot:oik-nivo-slider'] or [nivo post_type='screenshot:oik'] 
+ * @param array $atts - array of shortcode parameters
  *
 */    
 function bw_get_screenshots( $atts ) { 
   $explode = explode( ':', $atts['post_type'] );
   $type = bw_array_get( $explode, 0, "screenshot" );
   $plugin = bw_array_get( $explode, 1, "oik-nivo-slider" );
-  // if ( $plugin = "" ) $plugin = "oik-nivo-slider";   
   $path = oik_path( $type, $plugin );
   $files = glob( $path . "*" );
   $urls = bw_file_to_url( $files, $atts );
@@ -359,6 +363,9 @@ function bw_get_screenshots( $atts ) {
 
 /**
  * Format the Nivo output for a screenshot-n.png file
+ * 
+ * @param string $fileurl - the file name of the screenshot
+ * @param array $atts - array of shortcode parameters
 */ 
 function bw_format_nivo_screenshot( $fileurl, $atts ) {
   if ( bw_validate_torf( $atts['caption'] ) ) {
@@ -372,6 +379,7 @@ function bw_format_nivo_screenshot( $fileurl, $atts ) {
 
 /**
  * Enqueue the debug script if needed otherwise enqueue the minified (packed) one
+ * 
  * @param string $version - must be 31 or 271
 */
 function bw_nivo_enqueue_script( $version ) {
@@ -385,6 +393,7 @@ function bw_nivo_enqueue_script( $version ) {
 
 /**
  * Set the nivoSlider to start for objects with an id of slider-n
+ * 
  * Note: The .css file allows for up to 5 sliders per page.
 */
 function bw_slider_id() {
@@ -413,7 +422,6 @@ function bw_nivo_version( $theme ) {
   return( $version );
 }
 
-
 /**
  * Override the profile options with parameter settings with the same name
  * 
@@ -435,11 +443,14 @@ function bw_override_options( $options, $options_field, $atts, $atts_field, $fie
 }
   
 /**
- * Implement a Nivo slider for attachments or other post types
+ * Implement the [nivo] shortcode to display a Nivo slider for attachments or other post types
  *
- * The nivo slider consists of 
+ * The nivo slider consists of: 
  * jQuery, the Nivo slider jQuery and something to attach nivoSlider to the div containing the images
  * Nivo is a bit pernickety about the html you use in order to create links with captions.
+ * 
+ * @param array $atts - array of shortcode parameters
+ * @return string - the results of expanding the shortcode
  *
  *
 */
@@ -531,7 +542,7 @@ function nivo__syntax( $shortcode='nivo' ) {
                  );
   $syntax = array_merge( $nivo_syntax, _sc_thumbnail_full() );
   $syntax += array( "thumbs" => bw_skv( "", "n|y", "Thumbnail navigation" ));
-  $syntax += array( "effect" => bw_skv( "", "random|sliceDownRight|sliceDownLeft|sliceUpRight|sliceUpLeft|sliceUpDown|sliceUpDownLeft|fold|fade|boxRandom|boxRain|boxRainReverse|boxRainGrow|boxRainGrowReverse|slideInLeft|slideInRight", "transition effect" )
+  $syntax += array( "effect" => bw_skv( "", "random|sliceDownRight|sliceDownLeft|sliceUpRight|sliceUpLeft|sliceUpDown|sliceUpDownLeft |fold|fade|boxRandom|boxRain|boxRainReverse|boxRainGrow|boxRainGrowReverse|slideInLeft|slideInRight", "transition effect" ) );
   $syntax = array_merge( $syntax, _sc_posts() );
   $syntax = array_merge( $syntax, $nivo_syntax ); // Re-apply the post_type values for this shortcode
   return( $syntax );
@@ -547,7 +558,6 @@ function nivo__syntax( $shortcode='nivo' ) {
 function nivo__example( $shortcode='nivo' ) {
   $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" caption=n link=n';
   $text = "Slideshow of the screenshots from oik-nivo-slider, using the oik theme and the current settings. ";
-  //$text .= "The CSS class w70pc causes the slideshow to have a width of 70%. bd-550 sets the min-depth to 550px." ;
   bw_invoke_shortcode( $shortcode, $atts, $text  );
   sediv("clear");
 }

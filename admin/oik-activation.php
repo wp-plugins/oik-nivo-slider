@@ -175,10 +175,12 @@ function oik_plugin_plugin_inactive( $plugin=null, $dependencies=null, $problem=
   $dependencies = str_replace( ":", " version ", $dependencies );
   $text = "<p><b>$plugin_name may not be fully functional</b>. ";
   $text.= "Please install and activate the required version of this plugin: $dependencies</p>";
+  
   if ( current_filter() == "admin_notices" ) {
     $message = '<div class=" updated fade">';
     $message .= $text;
-    $message .= oik_plugin_oik_install_link( "oik", $problem );
+    $depends = strtok( $dependencies, " " );
+    $message .= oik_plugin_oik_install_link( $depends, $problem );
     $message .= '</div>'; 
     
   } else {

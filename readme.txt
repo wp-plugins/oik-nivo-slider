@@ -3,7 +3,7 @@ Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags:  responsive, Nivo, slider, shortcode, [nivo], oik, jQuery, slideshow, posts, pages, attachments
 Requires at least: 3.3
-Tested up to: 3.4.2
+Tested up to: 3.5.1
 Stable tag: 1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -32,6 +32,7 @@ See also [dev 7 studios](http://nivo.dev7studios.com) for more information about
 * Profile for nivo slider settings
 * Display slideshows with/without links
 * Display slideshows with/without captions
+* Transition effect can be defined in the shortcode
 * Supports custom links to your content
 * Supports jQuery Nivo 3.1 for responsive sliders
 * nivo slider can be put into any part of your website: content, header, footer and sidebar text widgets
@@ -85,6 +86,7 @@ The basic parameters that control the display of the Nivo slider are:
   thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
   class="|classes - CSS classes"
   thumbs="|n|y - thumbnail navigation"
+  effect="random|sliceDownRight|sliceDownLeft|sliceUpRight|sliceUpLeft|sliceUpDown|sliceUpDownLeft|fold|fade|boxRandom|boxRain|boxRainReverse|boxRainGrow|boxRainGrowReverse|slideInLeft|slideInRight
 ]`
 
 = How do I make the images link to my content? = 
@@ -117,6 +119,7 @@ Use the post_type parameter to specify the content type and
   ribbon="y|n - Display the ribbon, if the theme supports it"
   thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
   thumbs="|n|y - thumbnail navigation"
+  effect="random|sliceDownRight|sliceDownLeft|sliceUpRight|sliceUpLeft|sliceUpDown|sliceUpDownLeft|fold|fade|boxRandom|boxRain|boxRainReverse|boxRainGrow|boxRainGrowReverse|slideInLeft|slideInRight - transition effect"
   numberposts="5|numeric - number to return"
   offset="0|numeric - offset from which to start"
   category="|category-id - category IDs (comma separated)"
@@ -183,6 +186,9 @@ YES... from oik-nivo-slider version 1.7
 YES... from oik-nivo-slider version 1.7 with oik 1.17 or higher
 Thumbnail navigation is supported for version 3.1 of the nivo jQuery code.
 
+= Can I choose the effect per slider? =
+YES... from oik-nivo-slider version 1.7.1216. Use the effect= parameter e.g. [nivo effect=boxRain]
+
 = Which version of jQuery does it use? =
 It uses the jQuery library provided by WordPress. In WordPress 3.3.1 it was 1.7.1. For WordPress 3.4.1/3.4.2 it is 1.7.2
 
@@ -208,10 +214,15 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 12. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.8 = 
+* Uses latest dependency checking logic. Now dependent upon v1.17 of the oik base plugin
+
+= 1.7.1216 = 
+* Download to use the effect= parameter . Only available from oik-plugins.com
+
 = 1.7 = 
-* Version 1.7 requires oik v1.16 or higher
-* For thumbnail navigation support you will need oik v1.17(.1122.1709)
-* For custom values for boxCols or boxRows for box transition effects you will need oik v1.17(.1128)
+* Requires oik v1.17(.1122.1709) for thumbnail navigation support
+* Requires oik v1.17.1128 for custom boxCols or boxRows settings
 
 = 1.6 =
 * Version 1.6 should be used with oik version 1.16.
@@ -240,14 +251,32 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.8 = 
+* Changed: Updated to use the latest dependency checking logic
+* Tested: with WordPress 3.5.1 
+* Changed: Improved some documentation comments
+* Changed: Added a blank space in the syntax for the effect parameter - to improve the formatting in oik shortcode help 
+
+= 1.7.1216 = 
+* Added: effect parameter to override the profile setting
+
 = 1.7 = 
-* Added: Now supports nivo version 3.1 AND nivo 2.7.1. You can mix and match slider themes on a page
+* Changed: Improved CSS to allow for themes that set margins on <img> tags
+* Noted: bug causing small images to appear
+
+= 1.6.1128 =
 * Added: Slider transitions: "slideInLeft" and "slideInRight". 
+* Fixed: Bug preventing boxRain transition from completing when boxCols or boxRows values set in Nivo settings. Depends on oik v1.17.1128
+
+= 1.6.1122.1709 =
 * Added: controlNavThumbs option in Nivo settings. For Nivo 3.1
 * Added: Also supports thumbs=y|n parameter to override controlNavThumbs
+
+= 1.6.1122 =
+* Added: Now supports nivo version 3.1 AND nivo 2.7.1. You can mix and match slider themes on a page
 * Changed: Default theme is still called default. If you want the default theme from nivo 2.7.1 use default271
-* Changed: Improved CSS to allow for themes that set margins on <img> tags
-* Fixed: Bug preventing boxRain transition from completing when boxCols or boxRows values set in Nivo settings. Depends on oik v1.17(.1128)
+ 
+= 1.6.1121 = 
 * Fixed: Now supports images with only one size - as in  http://herbmiller.me/about/herb-miller-portraits
 
 = 1.6 =

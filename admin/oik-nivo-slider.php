@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2012 
+<?php // (C) Copyright Bobbing Wide 2012, 2013
 
 /**
  * Define Nivo slider settings fields and page
@@ -20,7 +20,6 @@ function oik_nivo_options_do_page() {
   oik_menu_footer();
   bw_flush();
 }
-
 
 /**
  * Settings for the jQuery Nivo slider  
@@ -86,22 +85,21 @@ function oik_nivo_slider_options() {
   
   bw_textfield_arr( $option, "Caption opacity", $options, 'captionOpacity', 4 );
   
-  
   bw_tablerow( array( "", "<input type=\"submit\" name=\"ok\" value=\"Save changes\" class=\"button-primary\"/>") ); 
   etag( "table" ); 			
   etag( "form" );
   bw_flush();
 }  
 
+/**
+ * Display some usage notes for the oik-nivo-slider with an example
+ */
 function oik_nivo_slider_usage() {
   p("These options for the jQuery Nivo slider control the default behaviour for each instance of the slider." );
-  //p("You can override these using the keyword parameters on the [nivo] shortcode" );
   oik_require( "nivo.inc", "oik-nivo-slider" );
   oik_require( "includes/oik-sc-help.inc" );
   bw_flush();
-  //sdiv( "bd-500" );
   nivo__example();
-  //ediv();
   sediv("cleared"); 
 }
 
