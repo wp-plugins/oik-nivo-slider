@@ -336,7 +336,9 @@ function bw_format_nivo_attachment( $post, $atts ) {
     if ( bw_validate_torf( $atts['link'] ) ) {
       $permalink = bw_get_image_link( $post->ID );
       alink( null, $permalink , $thumbnail, null );  
-    } else {
+    } elseif ( $atts['link'] == "file" ) {
+      alink( null, $image, $thumbnail, null ); 
+    } else { 
       e( $thumbnail );
     }    
   } else {
@@ -525,7 +527,7 @@ function bw_format_nivo_nggallery( $nggImage, $atts ) {
 /**
  * Enqueue the debug script if needed otherwise enqueue the minified (packed) one
  * 
- * @param string $version - must be 31 or 271
+ * @param string $version - must be 32, 31 or 271
 */
 function bw_nivo_enqueue_script( $version ) {
   if ( defined('SCRIPT_DEBUG' ) && SCRIPT_DEBUG == true) {
@@ -556,6 +558,7 @@ function bw_slider_id() {
  * @param string $theme - theme name
  * 2.7.1 versions are: orman, pascal, default271 and oik271
  * 3.1 versions are: default, bar, dark, light, oik AND anything else
+ * Now returns 3.2 for version 3.1 themes 
  */
 function bw_nivo_version( $theme ) { 
   static $versions = array( "default271" => "271" 
@@ -563,7 +566,7 @@ function bw_nivo_version( $theme ) {
                           , "orman" => "271"
                           , "pascal" => "271" 
                           );
-  $version = bw_array_get( $versions, $theme, "31" );
+  $version = bw_array_get( $versions, $theme, "32" );
   return( $version );
 }
 
@@ -648,6 +651,7 @@ function bw_nivo_slider( $atts=null ) {
     sdiv( "slider-wrapper theme-${theme}" );
     if ( $ribbon )
       sediv( "ribbon" );
+    //sediv( "nivoSlider-dummy" );
     sdiv( "nivoSlider", "slider-$slider_id" );
     $funcname = bw_funcname( "bw_format_nivo", $atts['post_type'] );
     foreach ( $posts as $post ) {
