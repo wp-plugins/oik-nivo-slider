@@ -3,8 +3,8 @@ Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags:  responsive, Nivo, slider, shortcode, [nivo], oik, jQuery, slideshow, posts, pages, attachments
 Requires at least: 3.3
-Tested up to: 3.6
-Stable tag: 1.8
+Tested up to: 3.6.1
+Stable tag: 1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 == Description ==
 [nivo] shortcode for the jQuery Nivo slider; "The Most Awesome jQuery Image Slider"; reputed to be the world's most popular jQuery image slider.
 
-= Features of jQuery Nivo 3.1 =
+= Features of jQuery Nivo 3.2 =
 
 * Flexible slider
 * 16 transition effects
@@ -33,7 +33,7 @@ See also [dev 7 studios](http://nivo.dev7studios.com) for more information about
 * Display slideshows with/without captions
 * Transition effect can be defined in the shortcode
 * Supports custom links to your content
-* Supports jQuery Nivo 3.1 for responsive sliders
+* Supports jQuery Nivo 3.2 for responsive sliders
 * nivo slider can be put into any part of your website: content, header, footer and sidebar text widgets
 * 1 additional responsive slider theme
 * Supports jQuery Nivo 2.7.1 for backward compatibility
@@ -43,6 +43,7 @@ See also [dev 7 studios](http://nivo.dev7studios.com) for more information about
 * The [nivo] shortcode is interchangeable with other oik shortcodes such as [bw_images], [bw_thumbs] or [bw_pages]
 * Supports display of images from a NextGEN gallery, using a "special post type" of nggallery.
 * Supports display of a plugin's screenshots
+* Supports display of images with fancybox
 
 Note: oik-nivo-slider is dependent upon the oik plugin. 
 You can activate it but it will not function correctly unless the pre-requisite version of oik is also activated.
@@ -81,7 +82,7 @@ The basic parameters that control the display of the Nivo slider are:
 
 `[nivo
   theme="default|bar|dark|light|oik|orman|pascal|default271|oik271 - Theme for the slideshow"
-  link="y|n - Link the images to the target post/page"
+  link="y|n|file - Link the images to the target post/page or media file"
   caption="y|n - Display the image title as the caption"
   ribbon="y|n - Display the ribbon, if the theme supports it (version 271 only)"
   thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
@@ -177,8 +178,8 @@ One way of achieving this is to code
 `<?php echo do_shortcode('[nivo post_type=attachment post_parent=487 caption=n]'); ?>`
 
 = Which version of the jQuery Nivo slider code is needed? =
-The plugin includes TWO versions of the FREE jQuery Nivo slider from Dev7 Studios
-* Version 3.1 is the latest version producing responsive slideshows.
+The plugin includes multiple versions of the FREE jQuery Nivo slider from Dev7 Studios
+* Version 3.2 is the latest version producing responsive slideshows.
 * oik-nivo-slider continues to support the themes for version 2.7.1: default271, orman, pascal and oik271
  
 = Does it support version 3.1 of the jQuery Nivo slider? =
@@ -189,13 +190,10 @@ YES... from oik-nivo-slider version 1.9
 
 = Does it support thumbnail navigation? =
 YES... from oik-nivo-slider version 1.7 with oik 1.17 or higher
-Thumbnail navigation is supported for version 3.1 of the nivo jQuery code.
+Thumbnail navigation is supported from version 3.1 of the nivo jQuery code.
 
 = Can I choose the effect per slider? =
 YES... Use the effect= parameter e.g. [nivo effect=boxRain]
-
-= Which version of jQuery does it use? =
-It uses the jQuery library provided by WordPress. In WordPress 3.3.1 it was 1.7.1. For WordPress 3.4.1/3.4.2 it is 1.7.2
 
 = What's the difference between this plugin and Nivo's WordPress plugin =
 I have not tried Nivo's plugin. But you can read about it and watch a video here
@@ -236,7 +234,7 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 
 == Upgrade Notice ==
 = 1.9 =
-* Now delivers jQuery nivo slider version 3.2
+* Now delivers jQuery nivo slider version 3.2. Upgrading the oik base plugin to v2.0.1 is also recommended.
 
 = 1.8 = 
 * Uses latest dependency checking logic. Now dependent upon v1.17 of the oik base plugin
@@ -277,9 +275,11 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 == Changelog ==
 = 1.9 =
 * Added: Added link=file parameter option to enable opening of images with "fancybox" without having to set the oik custom image link field
+* Added: rel="slider-n" to allow fancybox to open media files (link=file) in a fancybox gallery 
+* Added: class "iframe" to allow fancybox to open attachment links (link=y) in an iframe. 
 * Changed: Now uses jQuery nivo slider version 3.2
 * Changed: Updated oik nivo caption click jQuery; replacing live() with on()
-* Tested: With WordPress 3.6
+* Tested: With WordPress 3.6.1
 
 = 1.8 = 
 * Added: Support for displaying images from NextGEN galleries using post_type=nggallery:n where n= gallery ID
