@@ -1,4 +1,5 @@
-<?php // (C) Copyright Bobbing Wide 2012,2013
+<?php // (C) Copyright Bobbing Wide 2012-2014
+
 /**
  * Format the Nivo output for posts which have attached images 
  * 
@@ -576,6 +577,13 @@ function bw_nivo_version( $theme ) {
  * Use this routine to override options such as:
  * effect: fade, fold, slideInLeft, etc
  * 
+ * @param array $options - the options array
+ * @param string $options_field - the name of the options field to override
+ * @param array $atts - the overriding parameter array
+ * @param string $atts_field - the name of the field containing the override
+ * @param callback $field_validation - a validation function for the overriding parameter
+ * @return array - the overridden options array
+ * 
  */
 function bw_override_options( $options, $options_field, $atts, $atts_field, $field_validation=null ) {
   $value = bw_array_get( $atts, $atts_field, null ); 
@@ -584,7 +592,7 @@ function bw_override_options( $options, $options_field, $atts, $atts_field, $fie
       $value = $field_validation( $value );
     }  
   } 
-  if ( $value ) {
+  if ( $value !== null ) {
     $options[$options_field] = $value ;
   }    
   return( $options ); 
@@ -636,6 +644,11 @@ function bw_nivo_slider( $atts=null ) {
     } else { 
       //bw_jquery( "#slider-$slider_id", "nivoSlider", bw_jkv( get_option( 'bw_nivo_slider' ) ), true );
       $options = get_option( 'bw_nivo_slider' );
+      // 2013/01/29 - Implemented ability to override "controlNav" with a "nav" parameter.
+      // and "pauseTime" with a "pause" parameter
+      $options = bw_override_options( $options, "controlNav", $atts, "nav", "bw_validate_torf" ); 
+      $options = bw_override_options( $options, "pauseTime", $atts, "pause" ); 
+      $options = bw_override_options( $options, "manualAdvance", $atts, "manual", "bw_validate_torf" ); 
       $options = bw_override_options( $options, "controlNavThumbs", $atts, "thumbs", "bw_validate_torf" ); 
       $options = bw_override_options( $options, "effect", $atts, "effect", "bw_filter_transition_effect" ); 
       //bw_trace2( $options, "options" );   
@@ -692,6 +705,9 @@ function nivo__syntax( $shortcode='nivo' ) {
                  );
   $syntax = array_merge( $nivo_syntax, _sc_thumbnail_full() );
   $syntax += array( "thumbs" => bw_skv( "", "n|y", "Thumbnail navigation" ));
+  $syntax += array( "nav" => bw_skv( "", "n|y", "Control navigation" ));
+  $syntax += array( "pause" => bw_skv( "", "<i>pause</i>", "Pause time in milli seconds" ));
+  $syntax += array( "manual" => bw_skv( "", "n|y", "Manual advance" ));
   $syntax += array( "effect" => bw_skv( "", "random|sliceDownRight|sliceDownLeft|sliceUpRight|sliceUpLeft|sliceUpDown|sliceUpDownLeft |fold|fade|boxRandom|boxRain|boxRainReverse|boxRainGrow|boxRainGrowReverse|slideInLeft|slideInRight", "transition effect" ) );
   $syntax = array_merge( $syntax, _sc_posts() );
   $syntax = array_merge( $syntax, $nivo_syntax ); // Re-apply the post_type values for this shortcode

@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2012, 2013
+<?php // (C) Copyright Bobbing Wide 2012-2014
 
 /**
  * Define Nivo slider settings fields and page
@@ -10,7 +10,7 @@ function oik_nivo_lazy_admin_menu() {
 
 /**
  * Nivo slider settings page
-*/
+ */
 function oik_nivo_options_do_page() {
   oik_menu_header( "Nivo slider options", "w50pc" );
   oik_box( NULL, NULL, "Default slider options", "oik_nivo_slider_options" );
@@ -72,21 +72,24 @@ function oik_nivo_slider_options() {
   bw_textfield_arr( $option, "Box cols", $options, 'boxCols', 2 );
   bw_textfield_arr( $option, "Box rows", $options, 'boxRows', 2 );
   bw_textfield_arr( $option, "Anim speed", $options, 'animSpeed', 4 );
-  bw_textfield_arr( $option, "Pause time", $options, 'pauseTime', 4 );
+  bw_textfield_arr( $option, "Pause time (pause=<i>nnnn</i>)", $options, 'pauseTime', 4 );
   
-  bw_checkbox_arr( $option, "Control nav", $options, 'controlNav' );
+  bw_checkbox_arr( $option, "Control nav (nav=n|y)", $options, 'controlNav' );
   bw_checkbox_arr( $option, "Control nav thumbs (thumbs=n|y)", $options, 'controlNavThumbs' );
   //bw_textfield_arr( $option, "Control nav thumbs search", $options, 'controlNavThumbsSearch', 20 );
   //bw_textfield_arr( $option, "Control nav thumbs replace", $options, 'controlNavThumbsReplace', 20 );
   bw_checkbox_arr( $option, "Direction nav", $options, 'directionNav' );
   bw_checkbox_arr( $option, "Direction nav hide", $options, 'directionNavHide' );
   bw_checkbox_arr( $option, "Pause on hover", $options, 'pauseOnHover' );
-  bw_checkbox_arr( $option, "Manual advance", $options, 'manualAdvance' );
+  bw_checkbox_arr( $option, "Manual advance (manual=n|y)", $options, 'manualAdvance' );
   
   bw_textfield_arr( $option, "Caption opacity", $options, 'captionOpacity', 4 );
   
-  bw_tablerow( array( "", "<input type=\"submit\" name=\"ok\" value=\"Save changes\" class=\"button-primary\"/>") ); 
-  etag( "table" ); 			
+  //bw_tablerow( array( "", "<input type=\"submit\" name=\"ok\" value=\"Save changes\" class=\"button-primary\"/>") ); 
+  
+  etag( "table" ); 
+  e( isubmit( "ok", __( "Save changes", "oik" ), null, "button-primary" ) );
+  			
   etag( "form" );
   bw_flush();
 }  

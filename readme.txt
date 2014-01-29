@@ -2,8 +2,8 @@
 Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags:  responsive, Nivo, slider, shortcode, [nivo], oik, jQuery, slideshow, posts, pages, attachments
-Requires at least: 3.3
-Tested up to: 3.6.1
+Requires at least: 3.5
+Tested up to: 3.8.1
 Stable tag: 1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -120,7 +120,10 @@ Use the post_type parameter to specify the content type and
   caption="y|n - Display the image title as the caption"
   ribbon="y|n - Display the ribbon, if the theme supports it"
   thumbnail="full|thumbnail|medium|large|nnn|wxh - image size"
-  thumbs="|n|y - thumbnail navigation"
+  thumbs="|n| y - Thumbnail navigation"
+  nav="|n| y - Control navigation"
+  pause="|pause - Pause time in milli seconds"
+  manual="|n| y - Manual advance"
   effect="random|sliceDownRight|sliceDownLeft|sliceUpRight|sliceUpLeft|sliceUpDown|sliceUpDownLeft|fold|fade|boxRandom|boxRain|boxRainReverse|boxRainGrow|boxRainGrowReverse|slideInLeft|slideInRight - transition effect"
   numberposts="5|numeric - number to return"
   offset="0|numeric - offset from which to start"
@@ -136,6 +139,7 @@ Use the post_type parameter to specify the content type and
   post_mime_type="|image|application|text|video|mime type - Attached media MIME type"
   post_parent="|ID - Parent ID to use if not current post"
   post_status="publish|pending|draft|auto-draft|future|private|trash|any - Post status"
+  id="|IDs - IDs of posts to display"
 ]`
 
 = Do I have to remember all those parameters? =
@@ -233,6 +237,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 12. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.10 =
+* Now dependent upon oik v2.1
+
 = 1.9 =
 * Now delivers jQuery nivo slider version 3.2. Upgrading the oik base plugin to v2.0.1 is also recommended.
 
@@ -273,6 +280,10 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.10 =
+* Fixed: Logic now allows thumbs=n parameter to override setting of Control nav thumbs.
+* Added: support to override: Control nav ( nav=n|y ), Pause time ( pause=nnnn ) and Manual advance ( manual=n|y ) 
+
 = 1.9 =
 * Added: Added link=file parameter option to enable opening of images with "fancybox" without having to set the oik custom image link field
 * Added: rel="slider-n" to allow fancybox to open media files (link=file) in a fancybox gallery 
