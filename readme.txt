@@ -237,6 +237,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 12. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.11 = 
+* Contains a CSS fix for nivo sliders displayed in text widgets
+
 = 1.10 =
 * Now dependent upon oik v2.1
 
@@ -280,6 +283,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.11 = 
+* Fixed: Changed nivo-slider-32.css to correctly display transitions in text widgets... where oik.css was setting max-width to 100%, but nivo need max-width: none;
+ 
 = 1.10 =
 * Fixed: Logic now allows thumbs=n parameter to override setting of Control nav thumbs.
 * Added: support to override: Control nav ( nav=n|y ), Pause time ( pause=nnnn ) and Manual advance ( manual=n|y ) 

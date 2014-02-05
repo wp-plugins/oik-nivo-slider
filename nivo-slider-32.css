@@ -6,7 +6,7 @@
  * Free to use and abuse under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
  * 
- * Modified by bobbingwide 
+ * Modified by bobbingwide 2012-2014 
  */
  
 /* The Nivo Slider styles */
@@ -130,5 +130,5 @@ This class is dynamically added/removed by the jQuery oikNCClick() function.
 /* Reset any margin set on images by Artisteer themes */
 img.nivo-main-image { margin: 0px; }
 a.nivo-imageLink img { margin: 0px; }
-div.nivo-slice img, div.nivo-box img { margin: 0px; }
+div.nivo-slice img, div.nivo-box img { margin: 0px; max-width: none; }
 
