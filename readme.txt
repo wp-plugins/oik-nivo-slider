@@ -13,6 +13,12 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 == Description ==
 [nivo] shortcode for the jQuery Nivo slider; "The Most Awesome jQuery Image Slider"; reputed to be the world's most popular jQuery image slider.
 
+= New feature in nivo v1.12 =
+
+* Choose the contents of the caption area using the format= parameter
+
+Note: The format parameter was first made available for the [bw_pages] shortcode and is also supported in [bw_cycle]; both part of the oik base plugin.  
+
 = Features of jQuery Nivo 3.2 =
 
 * Flexible slider
@@ -31,6 +37,7 @@ See also [dev 7 studios](http://nivo.dev7studios.com) for more information about
 * Profile for nivo slider settings
 * Display slideshows with/without links
 * Display slideshows with/without captions
+* Displays slideshows with HTML captions, using the format= parameter
 * Transition effect can be defined in the shortcode
 * Supports custom links to your content
 * Supports jQuery Nivo 3.2 for responsive sliders
@@ -92,9 +99,16 @@ The basic parameters that control the display of the Nivo slider are:
 ]`
 
 = How do I make the images link to my content? = 
-There are two methods.
+There are three methods.
+1. Use the oik custom link URL field
+1. Build the slideshow from images attached to related content
+1. Use the format= parameter 
+
+= Use the oik custom link URL field =
 
 If your slide show is created from attached images then use the oik custom image link URL field in the Add Media dialog to set the target for the link.
+
+= Images attached to related content =
 
 Alternatively build the slideshow dynamically from images attached to related content. 
 
@@ -108,6 +122,13 @@ Use the post_type parameter to specify the content type and
 `[nivo
   post_type="post_type - Post type to display"
   post_parent="|ID - Parent ID to use if not current post"
+]`
+
+= Use the format= parameter =
+`[nivo format="L" 
+]`
+
+`[nivo format="T/C"
 ]`
 
 
@@ -237,6 +258,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 12. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.12 = 
+* Upgrade to get full HTML support for captions using the format parameter
+
 = 1.11 = 
 * Contains a CSS fix for nivo sliders displayed in text widgets
 
@@ -283,8 +307,11 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.12 =
+* Added: Support for the format= parameter - allowing HTML content to be displayed in the caption area
+
 = 1.11 = 
-* Fixed: Changed nivo-slider-32.css to correctly display transitions in text widgets... where oik.css was setting max-width to 100%, but nivo need max-width: none;
+* Fixed: Changed nivo-slider-32.css to correctly display transitions in text widgets... where oik.css was setting max-width to 100%, but nivo needs max-width: none;
  
 = 1.10 =
 * Fixed: Logic now allows thumbs=n parameter to override setting of Control nav thumbs.

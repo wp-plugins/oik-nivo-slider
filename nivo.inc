@@ -11,14 +11,30 @@
  * 
 */
 function bw_format_nivo( $post, $atts ) {
-  setup_postdata( $post );
-  if ( bw_validate_torf( $atts['caption'] ) )
-    $atts['title'] = get_the_title( $post->ID );
+  //setup_postdata( $post );
+  
+  $alt = null;
+  if ( bw_validate_torf( $atts['caption'] ) ) {
+    $title = get_the_title( $post->ID );
+    if ( $format = bw_array_get( $atts, "format", false ) ) {
+      $alt =  $title;
+      $title = "#" . $atts['slider-id'] . "-" . $post->ID;
+    } else {
+    }
+  } else {
+    $title = null;
+  }   
+
+
+  //if ( bw_validate_torf( $atts['caption'] ) )
+  //  $atts['title'] = get_the_title( $post->ID );
+  $atts['title'] = $title;  
+
   $atts['thumbnail'] = bw_array_get( $atts, "thumbnail", "full" );
   $thumbnail = bw_thumbnail( $post->ID, $atts );
   $permalink = get_permalink( $post->ID );
   if ( bw_validate_torf( $atts['link'] ) ) {
-    alink( null, $permalink , $thumbnail, null);  
+    alink( null, $permalink , $thumbnail, $alt );  
   } else {
     e( $thumbnail );
   }    
@@ -312,6 +328,29 @@ function bw_get_attached_file_name( $post_id, $atts ) {
 }
 
 /**
+ * Format the HTML captions for the nivo slider
+ *
+ * Uses oik's format= parameter - from [bw_pages] to display whatever you like in the content.
+ * Note: For attachments the Caption is stored as the post_excerpt and the Description in the post_content
+ *
+ * @param array $posts - array of posts
+ * @param array $atts - array of shortcode parameters
+ */
+function bw_format_nivo_html_captions( $posts, $atts ) {
+  $format = bw_array_get( $atts, "format", null );
+  if ( $format ) {
+    oik_require( "shortcodes/oik-pages.php" );
+    $bw_post_formatter = bw_query_post_formatter( $atts );
+    foreach ( $posts as $post ) {
+      // bw_trace2( $post );
+      sdiv( "nivo-html-caption", $atts['slider-id'] . "-" . $post->ID );
+      $bw_post_formatter( $post, $atts );
+      ediv();
+    }
+  }
+}
+
+/**
  * Format the Nivo output for attached images
  *
  * Extract from Nivo's documentation
@@ -319,12 +358,23 @@ function bw_get_attached_file_name( $post_id, $atts ) {
  * - To add an HTML Caption simply set the title attribute to the ID of a element that contains your caption (prefixed with a hash). 
  * - Note that the HTML element that contains your caption must have the CSS class nivo-html-caption applied and must be outside of the slider div.
  *
- * In this code we haven't YET implemented the HTML caption logic
- * 
-*/ 
+ * The HTML caption logic was implemented in version 1.12, using oik's format= parameter.
+ * Since there can be multiple sliders on a page the unique ID in the title attribute needs to take into account the slider instance (slider-id).
+ * The hyphen between the slider-id and post id helps ensure uniqueness.
+ *
+ * @param post $post - the post to be displayed
+ * @param array $atts - array of parameters; name value pairs
+ *
+ */ 
 function bw_format_nivo_attachment( $post, $atts ) {
+  $alt = null;
   if ( bw_validate_torf( $atts['caption'] ) ) {
     $title = get_the_title( $post->ID );
+    if ( $format = bw_array_get( $atts, "format", false ) ) {
+      $alt =  $title;
+      $title = "#" . $atts['slider-id'] . "-" . $post->ID;
+    } else {
+    }
   } else {
     $title = null;
   }   
@@ -333,7 +383,7 @@ function bw_format_nivo_attachment( $post, $atts ) {
   bw_trace2( $image, "image" );
   
   if ( $image ) {
-    $thumbnail = retimage( null, $image , $title, null, null, kv("data-thumb", $image) );
+    $thumbnail = retimage( null, $image , $title, $alt, null, kv("data-thumb", $image) );
     if ( bw_validate_torf( $atts['link'] ) ) {
       $permalink = bw_get_image_link( $post->ID );
       alink( "iframe", $permalink , $thumbnail, null );  
@@ -542,7 +592,7 @@ function bw_nivo_enqueue_script( $version ) {
 /**
  * Set the nivoSlider to start for objects with an id of slider-n
  * 
- * Note: The .css file allows for up to 5 sliders per page.
+ * Note: The .css file allows for up to 10 sliders per page.
 */
 function bw_slider_id() {
   global $bw_slider_count; 
@@ -603,13 +653,13 @@ function bw_override_options( $options, $options_field, $atts, $atts_field, $fie
  *
  * The nivo slider consists of: 
  * jQuery, the Nivo slider jQuery and something to attach nivoSlider to the div containing the images
- * Nivo is a bit pernickety about the html you use in order to create links with captions.
+ * Nivo is a bit pernickety about the html you use in order to create links with captions;
+ * finally dealt with in version 1.12 with the addition of bw_format_nivo_html_captions().
  * 
  * @param array $atts - array of shortcode parameters
  * @return string - the results of expanding the shortcode
  *
- *
-*/
+ */
 function bw_nivo_slider( $atts=null ) {
   $atts[ 'post_type'] = bw_array_get( $atts, "post_type", "attachment" );
   if ( $atts['post_type'] == "attachment" ) {
@@ -620,7 +670,12 @@ function bw_nivo_slider( $atts=null ) {
   $atts[ 'post_mime_type'] = bw_array_get( $atts, "post_mime_type", $def_post_mime_type );
   $theme = bw_array_get( $atts, "theme", "default" );
   $class = bw_array_get( $atts, "class", null );
-  $atts['link'] = bw_array_get( $atts, "link", "y" );
+  $format = bw_array_get( $atts, "format", null );
+  if ( $format ) {
+    $atts['link'] = bw_array_get( $atts, "link", "n" );
+  } else {
+    $atts['link'] = bw_array_get( $atts, "link", "y" );
+  }  
   $atts['caption'] = bw_array_get($atts, "caption", "y" );
   $ribbon = bw_validate_torf( bw_array_get(  $atts, "ribbon", "y" ));
   $atts['thumbnail'] = bw_array_get( $atts, "thumbnail", "full" );
@@ -672,6 +727,11 @@ function bw_nivo_slider( $atts=null ) {
       $funcname( $post, $atts );
     }
     ediv();
+    
+    // Now, add the formatted content if requested
+    if ( $format ) {
+      bw_format_nivo_html_captions( $posts, $atts );
+    }
     ediv();  
     ediv( $class ); 
   }  
@@ -680,7 +740,7 @@ function bw_nivo_slider( $atts=null ) {
 
 /**
  * oik shortcode help for [nivo] 
-*/ 
+ */ 
 function nivo__help( $shortcode="nivo" ) {
   return( "Display the nivo slideshow for attachments or other post types." );
 }
@@ -694,13 +754,14 @@ function _sc_thumbnail_full() {
 
 /**
  * oik shortcode syntax for [nivo]
-*/ 
+ */ 
 function nivo__syntax( $shortcode='nivo' ) {
   $nivo_syntax = array( "post_type" => bw_skv( "attachment", "<i>post_type</i>", "Post type to display" )
                  , "theme" => bw_skv( "default", "bar|dark|light|orman|pascal|oik271|default271", "Theme for the slideshow" )
                  , "class" => bw_skv( "", "<i>classes</i>", "CSS classes" )
                  , "link" => bw_skv( "y", "n|file", "Link the images to the target post/page or media file" )
                  , "caption" => bw_skv( "y", "n", "Display the image title as the caption" )
+                 , "format" => bw_skv( null, "<i>format</i>", "field format string" )
                  , "ribbon" => bw_skv( "y", "n", "Display the ribbon, if the theme supports it" )
                  );
   $syntax = array_merge( $nivo_syntax, _sc_thumbnail_full() );
@@ -720,7 +781,7 @@ function nivo__syntax( $shortcode='nivo' ) {
  * Note: The default processing is to show attached images
  * If there is no post (as on admin pages) then it shows unattached images.
  * An interesting side effect.
-*/ 
+ */ 
 function nivo__example( $shortcode='nivo' ) {
   $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" caption=n link=n';
   $text = "Slideshow of the screenshots from oik-nivo-slider, using the oik theme and the current settings. ";
@@ -730,7 +791,7 @@ function nivo__example( $shortcode='nivo' ) {
 
 /**
  * Produce the code snippet for the nivo shortcode as used in the example
-*/ 
+ */ 
 function nivo__snippet( $shortcode='nivo', $atts=null ) {
   $atts = 'theme=oik post_type="screenshot:oik-nivo-slider" caption=n link=n';
   _sc__snippet( $shortcode, $atts );
