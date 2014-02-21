@@ -258,6 +258,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 12. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.13 =
+* Contains a fix for when using the format= parameter when multiple sliders are being used to display the same content
+
 = 1.12 = 
 * Upgrade to get full HTML support for captions using the format parameter
 
@@ -307,6 +310,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.13 = 
+* Fixed: Added call to bw_clear_processed_posts()
+
 = 1.12 =
 * Added: Support for the format= parameter - allowing HTML content to be displayed in the caption area
 

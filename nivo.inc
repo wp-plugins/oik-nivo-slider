@@ -734,6 +734,7 @@ function bw_nivo_slider( $atts=null ) {
     }
     ediv();  
     ediv( $class ); 
+    bw_clear_processed_posts();
   }  
   return bw_ret();
 }
