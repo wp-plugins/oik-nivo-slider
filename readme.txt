@@ -4,7 +4,7 @@ Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags:  responsive, Nivo, slider, shortcode, [nivo], oik, jQuery, slideshow, posts, pages, attachments
 Requires at least: 3.5
 Tested up to: 3.8.1
-Stable tag: 1.12
+Stable tag: 1.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -259,7 +259,7 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 
 == Upgrade Notice ==
 = 1.13 =
-* Contains a fix for when using the format= parameter when multiple sliders are being used to display the same content
+* Contains a fix for when using the format= parameter and when multiple sliders are being used to display the same content
 
 = 1.12 = 
 * Upgrade to get full HTML support for captions using the format parameter
