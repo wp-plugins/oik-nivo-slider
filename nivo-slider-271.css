@@ -98,3 +98,8 @@ http://support.dev7studios.com/discussions/nivo-slider/42-cant-put-links-on-all-
 This class is dynamically added/removed by the jQuery oikNCClick() function.
 */
 .nivo-caption-hovered { text-decoration: underline; }
+
+/**
+ * Only display the first image
+ */
+.nivoSlider a.iframe:nth-child(n+2) img  {  display:none; }

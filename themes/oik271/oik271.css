@@ -86,3 +86,5 @@ Author URI: http://www.oik-plugins.com
 .theme-oik271 .nivo-caption a:hover {
     color:#fff;
 }
+
+.nivoSlider a.iframe:first-child img  { margin-bottom: 40px; }

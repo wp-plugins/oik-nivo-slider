@@ -3,7 +3,7 @@ Contributors: bobbingwide
 Donate link: http://www.oik-plugins.com/oik/oik-donate/
 Tags:  responsive, Nivo, slider, shortcode, [nivo], oik, jQuery, slideshow, posts, pages, attachments
 Requires at least: 3.5
-Tested up to: 3.8.1
+Tested up to: 4.2
 Stable tag: 1.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -258,6 +258,9 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 12. oik Nivo slider options page
 
 == Upgrade Notice ==
+= 1.14 =
+* Upgrade if you're using the Nivo v2.7.1 themes
+
 = 1.13 =
 * Contains a fix for when using the format= parameter and when multiple sliders are being used to display the same content
 
@@ -310,6 +313,8 @@ YES. See [oik-nivo-slider](http://www.oik-plugins.com/oik-plugins/oik-nivo-slide
 * first version works with oik version 1.11
 
 == Changelog ==
+= 1.14 =
+* Fixed: Includes minor CSS changes to improve the initial display of sliders displayed using Nivo jQuery 2.7.1 themes@ default271, oik271, orman and pascal
 = 1.13 = 
 * Fixed: Added call to bw_clear_processed_posts()
 

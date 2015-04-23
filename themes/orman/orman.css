@@ -99,3 +99,6 @@ Modified: bobbingwide for oik-nivo-slider
     left:56px;
     z-index:300;
 }
+
+
+.nivoSlider a.iframe:first-child img  { margin-left: 77px; }

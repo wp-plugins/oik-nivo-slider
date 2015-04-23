@@ -103,3 +103,24 @@ Modified: bobbingwide for oik-nivo-slider
     left:-8px;
     z-index:300;
 }
+
+/*
+.theme-pascal .nivo-directionNav a {
+	display:block;
+	width:30px;
+	height:30px;
+	background:url(arrows.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+}
+.theme-pascal a.nivo-nextNav {
+	background-position:-30px 0;
+	right:15px;
+}
+.theme-pascal a.nivo-prevNav {
+	left:15px;
+}
+*/
+
+
+.nivoSlider a.iframe:first-child img  { margin-left: 19px; }

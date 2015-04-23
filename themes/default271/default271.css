@@ -73,3 +73,6 @@ Author URI: http://dev7studios.com
 .theme-default271 .nivo-caption a:hover {
     color:#fff;
 }
+
+
+.nivoSlider a.iframe:first-child img  { margin-bottom: 40px; }
